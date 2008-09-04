@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 version = '0.1'
 
-setup(name='pleiades.vocabulary',
+setup(name='pleiades.vocabularies',
       version=version,
       description="",
       long_description="""\
