@@ -2,14 +2,14 @@ import unittest
 import doctest
 from Testing import ZopeTestCase as ztc
 
-from pleiades.vocabulary.tests import base
+from pleiades.vocabularies.tests import base
 optionflags = doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS
 
 def test_suite():
     return unittest.TestSuite([
         ztc.FunctionalDocFileSuite(
             'vocab-views.txt',
-            package='pleiades.vocabulary.tests',
+            package='pleiades.vocabularies.tests',
             test_class=base.PleiadesVocabularyFunctionalTestCase,
             optionflags=optionflags
             )

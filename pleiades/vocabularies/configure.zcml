@@ -2,7 +2,7 @@
   xmlns="http://namespaces.zope.org/zope"
   xmlns:five="http://namespaces.zope.org/five"
   xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
-  i18n_domain="pleiades.policy"
+  i18n_domain="pleiades.vocabularies"
   >
 
   <include package="zope.app.component" file="meta.zcml"/>
@@ -13,7 +13,7 @@
     
   <genericsetup:registerProfile
     name="default"
-    title="Pleiades Vocabulary"
+    title="Pleiades Vocabularies"
     directory="profiles/default"
     description="Pleiades vocabulary features"
     provides="Products.GenericSetup.interfaces.EXTENSION"

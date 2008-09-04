@@ -44,14 +44,14 @@ And we ensure that we get the friendly logged-in message:
 Test index of vocabularies
 
     >>> browser.handleErrors = False
-    >>> vocab_url = self.portal.vocabulary.absolute_url()
+    >>> vocab_url = self.folder['vocabularies'].absolute_url()
     >>> browser.open("%s/vocabularies_index" % vocab_url)
     >>> 'name-accuracy' in browser.contents
     True
 
-Test view of one vocabulary
+Test view of one vocabularies
 
-    >>> vocab_url = self.portal.vocabulary.absolute_url()
+    >>> vocab_url = self.folder['vocabularies'].absolute_url()
     >>> browser.open("%s/vocabulary_view?t=name-accuracy" % vocab_url)
     >>> 'a string of characters in an ancient (primary)' in browser.contents
     True
