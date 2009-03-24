@@ -8,7 +8,7 @@
     name="vocabulary_macros"
     class=".vocabulary.VocabularyMacros"
     template="vocabulary_macros.pt"
-    permission="zope.View"
+    permission="zope2.View"
     />
 
   <browser:page
@@ -16,7 +16,7 @@
     name="vocabularies_index"
     class=".vocabulary.VocabulariesIndex"
     template="vocabularies_index.pt"
-    permission="zope.View"
+    permission="zope2.View"
     />
 
   <browser:page
@@ -24,7 +24,7 @@
     name="vocabulary_view"
     class=".vocabulary.VocabularyView"
     template="vocabulary_view.pt"
-    permission="zope.View"
+    permission="zope2.View"
     />
 
 </configure>
