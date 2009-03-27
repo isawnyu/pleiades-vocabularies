@@ -7,7 +7,6 @@ from Products.PloneTestCase import PloneTestCase as ptc
 from Products.PloneTestCase.layer import onsetup
 
 ztc.installProduct('ATVocabularyManager')
-ztc.installProduct('PleiadesEntity')
 
 @onsetup
 def setup_pleiades_vocabularies():
@@ -35,7 +34,7 @@ def setup_pleiades_vocabularies():
 # PloneTestCase set up this product on installation.
 
 setup_pleiades_vocabularies()
-ptc.setupPloneSite(products=['ATVocabularyManager', 'PleiadesEntity', 'pleiades.vocabularies'])
+ptc.setupPloneSite(products=['pleiades.vocabularies'])
 
 class PleiadesVocabularyTestCase(ptc.PloneTestCase):
     """We use this base class for all the tests in this package. If necessary,
