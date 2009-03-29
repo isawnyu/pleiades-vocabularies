@@ -72,7 +72,7 @@
             base_macros context/base/macros;
             view_template python:'%s_view' % portal_type;
             view_macros python:path('context/%s/macros|nothing' % view_template);
-            header_macro context/thesaurus_macros/macros/header | base_macros/header;
+            header_macro context/vocabulary_macros/macros/header | base_macros/header;
             body_macro view_macros/body | body_macro | base_macros/body;
             termlisting_macro context/vocabulary_macros/macros/termlisting | folderlisting | base_macros/folderlisting;
             footer_macro view_macros/footer | footer_macro | base_macros/footer;
