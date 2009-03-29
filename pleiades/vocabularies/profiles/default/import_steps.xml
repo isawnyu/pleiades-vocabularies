@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<import-steps>
+  <import-step
+    id="pleiades.vocabularies-various"
+    version="20090326-01"
+    handler="pleiades.vocabularies.setuphandlers.importVarious"
+    title="Pleiades Vocabularies Setup"
+    >
+  </import-step>
+</import-steps>
