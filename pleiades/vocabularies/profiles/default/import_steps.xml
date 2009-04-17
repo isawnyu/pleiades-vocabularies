@@ -6,5 +6,6 @@
     handler="pleiades.vocabularies.setuphandlers.importVarious"
     title="Pleiades Vocabularies Setup"
     >
+      <dependency step="structure"/>
   </import-step>
 </import-steps>

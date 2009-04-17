@@ -4,13 +4,13 @@ from Products.CMFCore.utils import getToolByName
 PRODUCT_DEPENDENCIES = (
     'ATVocabularyManager',
     )
-                        
+
 EXTENSION_PROFILES = ('pleiades.vocabularies:default',)
 
 def install(self, reinstall=False):
     portal_quickinstaller = getToolByName(self, 'portal_quickinstaller')
     portal_setup = getToolByName(self, 'portal_setup')
-
+    
     for product in PRODUCT_DEPENDENCIES:
         if reinstall and portal_quickinstaller.isProductInstalled(product):
             portal_quickinstaller.reinstallProducts([product])
@@ -24,3 +24,4 @@ def install(self, reinstall=False):
         product_name = extension_id.split(':')[0]
         portal_quickinstaller.notifyInstalled(product_name)
         transaction.savepoint()
+        
