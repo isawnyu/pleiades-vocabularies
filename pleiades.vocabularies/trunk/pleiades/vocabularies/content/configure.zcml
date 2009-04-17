@@ -1,0 +1,21 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:five="http://namespaces.zope.org/five"
+  i18n_domain="pleiades.vocabularies"
+  >
+
+  <class class=".vocabulary.PleiadesVocabulary">
+    <require
+      permission="zope2.View"
+      interface=".interfaces.IPleiadesVocabulary"
+      />
+  </class>
+
+  <class class=".term.PleiadesVocabularyTerm">
+    <require
+      permission="zope2.View"
+      interface=".interfaces.IPleiadesVocabularyTerm"
+      />
+  </class>
+
+</configure>

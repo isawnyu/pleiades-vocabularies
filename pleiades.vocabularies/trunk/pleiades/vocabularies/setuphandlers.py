@@ -1,33 +1,38 @@
 import logging
 import os
 
+from imsvdex.vdex import VDEXManager
+
 from Products.CMFCore.utils import getToolByName
+
 
 logger = logging.getLogger('pleiades.configuration.setuphandlers')
 
+
 def importVarious(context):
-    """Miscellanous steps import handle
-    """
-    
+    """Miscellanous steps import handle."""
     if context.readDataFile('pleiades.vocabularies_various.txt') is None:
         return
     installVocabularies(context)
     
+
 def installVocabularies(context):
     """creates/imports the atvm vocabs."""
     site = context.getSite()
-    # Create vocabularies in vocabulary lib
     atvm = getToolByName(site, 'portal_vocabularies')
-    vocabmap = {'name-accuracy': ('VdexVocabulary', 'VdexTerm'),
-         'association-certainty': ('VdexVocabulary', 'VdexTerm'),
-         'place-types': ('VdexVocabulary', 'VdexTerm'),
-         'attestation-confidence': ('VdexVocabulary', 'VdexTerm'),
-         'time-periods': ('VdexVocabulary', 'VdexTerm'),
-         'name-completeness': ('VdexVocabulary', 'VdexTerm'),
-         'ancient-name-languages': ('VdexVocabulary', 'VdexTerm'),
-         'name-types': ('VdexVocabulary', 'VdexTerm'),
-        }
-    for vocabname in vocabmap.keys():
+    wftool = getToolByName(site, 'portal_workflow')
+    vocabs = site['vocabularies']
+    vocab_names = [
+        'name-accuracy',
+        'association-certainty',
+        'place-types',
+        'attestation-confidence',
+        'time-periods',
+        'name-completeness',
+        'ancient-name-languages',
+        'name-types',
+        ]
+    for vocabname in vocab_names:
         vdexpath = os.path.join(
             os.path.dirname(__file__), 'data', '%s.vdex' % vocabname
             )
@@ -39,7 +44,17 @@ def installVocabularies(context):
             logger.warn("Problems while reading VDEX import file "+\
                         "provided at %s." % vdexpath)
             continue
-        if not vocabname in atvm.contentIds():
-            atvm.invokeFactory(vocabmap[vocabname][0], vocabname)
-            atvm[vocabname].importXMLBinding(data)
+        if not vocabname in vocabs.contentIds():
+            vid = vocabs.invokeFactory('PleiadesVocabulary', vocabname)
+            wftool.doActionFor(vocabs[vid], action='publish')
+            vdex = VDEXManager(data)
+            for key in vdex.getVocabularyDict().keys():
+                value = vdex.getTermCaptionById(key)
+                descr = vdex.getTermDescriptionById(key).capitalize()
+                tid = vocabs[vid].invokeFactory('PleiadesVocabularyTerm', key, title=value, description=descr)
+                wftool.doActionFor(vocabs[vid][tid], action='publish')
+            if vid in atvm.contentIds():
+                atvm.manage_delObjects([vid])
+            atvm.invokeFactory('AliasVocabulary', vid, target=vocabs[vid])
+    return None
             

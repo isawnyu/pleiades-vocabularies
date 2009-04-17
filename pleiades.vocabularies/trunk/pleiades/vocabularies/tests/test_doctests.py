@@ -7,12 +7,12 @@ optionflags = doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS
 
 def test_suite():
     return unittest.TestSuite([
-        ztc.FunctionalDocFileSuite(
-            'vocab-views.txt',
-            package='pleiades.vocabularies.tests',
-            test_class=base.PleiadesVocabularyFunctionalTestCase,
-            optionflags=optionflags
-            )
+        # ztc.FunctionalDocFileSuite(
+        #     'vocab-views.txt',
+        #     package='pleiades.vocabularies.tests',
+        #     test_class=base.PleiadesVocabularyFunctionalTestCase,
+        #     optionflags=optionflags
+        #     )
         ])
 
 if __name__ == '__main__':
