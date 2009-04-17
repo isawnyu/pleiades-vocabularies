@@ -174,6 +174,7 @@ class PleiadesVocabulary(SimpleVocabulary):
         
         sortMethod = self.getSortMethod()
         keys, values = zip(*self.getTermItems())
+        keys = list(keys)
         
         if not hasattr(self, 'sortMethod'):
             # smooth upgrade from previous releases
