@@ -19,6 +19,16 @@
     provides="Products.GenericSetup.interfaces.EXTENSION"
     />
 
+  <permission
+    id="pleiades.vocabularies.AddVocabulary"
+    title="Pleiades: Add Vocabulary"
+    />
+    
+  <permission
+    id="pleiades.vocabularies.AddVocabularyTerm"
+    title="Pleiades: Add Vocabulary Term"
+    />
+
   <include package=".browser"/>
   <include package=".content"/>
   
