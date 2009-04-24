@@ -31,5 +31,6 @@
 
   <include package=".browser"/>
   <include package=".content"/>
+  <include file="skins.zcml"/>
   
 </configure>

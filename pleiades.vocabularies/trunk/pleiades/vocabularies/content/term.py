@@ -1,4 +1,4 @@
-
+from zope.interface import implements
 from Products.ATVocabularyManager.config import *
 if HAS_LINGUA_PLONE:
     from Products.LinguaPlone.public import *
@@ -15,10 +15,12 @@ from Products.ATVocabularyManager.tools import registerVocabularyTerm
 from Products.ATVocabularyManager.types.simple.term import SimpleVocabularyTerm
 
 from pleiades.vocabularies.config import PROJECTNAME
+from pleiades.vocabularies.content.interfaces import IPleiadesVocabularyTerm
 
 
 class PleiadesVocabularyTerm(SimpleVocabularyTerm):
     
+    implements(IPleiadesVocabularyTerm)
     security = ClassSecurityInfo()
     portal_type = meta_type = 'PleiadesVocabularyTerm'
     archetype_name = 'PleiadesVocabularyTerm'
