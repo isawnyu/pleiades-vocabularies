@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<object name="portal_skins"
+        meta_type="Plone Skins Tool"
+        allow_any="False"
+        cookie_persistence="False"
+        request_varname="plone_skin">
+
+ <object name="pleiades_vocabularies_custom_templates"
+    meta_type="Filesystem Directory View"
+    directory="pleiades.vocabularies:skins/pleiades_vocabularies_custom_templates"/>
+ 
+ <skin-path name="Plone Default">
+  <layer insert-after="custom" 
+         name="pleiades_vocabularies_custom_templates"/>
+ </skin-path>
+
+</object>

@@ -1,0 +1,32 @@
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="plone">
+    
+    <body>
+      <metal:body_macro metal:define-macro="body">
+
+        <p class="documentDescription">
+          <metal:field use-macro="python:here.widget('description', mode='view')">Description</metal:field>
+        </p>
+
+        <div
+            tal:define="portal python:here.portal_url.getPortalObject();
+                        field_macro field_macro | here/widgets/field/macros/view;"
+            tal:repeat="field python:here.Schema().filterFields(isMetadata=0)"
+            >
+            <tal:if_visible define="mode string:view;
+                                visState python:field.widget.isVisible(here, mode);
+                                visCondition python:field.widget.testCondition(here, portal, template);"
+                condition="python:visState == 'visible' and visCondition"
+                >
+                <metal:use_field use-macro="field_macro"/>
+            </tal:if_visible>
+        </div>
+          
+    </metal:body_macro>
+      
+  </body>
+</html>

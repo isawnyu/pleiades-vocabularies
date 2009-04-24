@@ -1,0 +1,24 @@
+Testing user terms
+==================
+
+Check initial, published terms
+
+  >>> portal = self.portal
+  >>> vocab = portal['vocabularies']['name-accuracy']
+  >>> self.logout()
+  >>> vocab.getTermItems()
+  [('accurate', 'accurate'), ('false', 'false'), ('inaccurate', 'inaccurate')]
+  
+Add a new term
+
+  >>> self.login()
+  >>> self.setRoles(['Member', 'Contributor'])
+  >>> _ = vocab.invokeFactory('PleiadesVocabularyTerm', id='bogus', title='Bogus', description='Completely Bogus')
+  >>> vocab.getTermItems()
+  [('accurate', 'accurate'), ('false', 'false'), ('inaccurate', 'inaccurate'), ('bogus', 'Bogus')]
+  
+Now check that the new term isn't visible to unauthenticated
+
+  >>> self.logout()
+  >>> vocab.getTermItems()
+  [('accurate', 'accurate'), ('false', 'false'), ('inaccurate', 'inaccurate')]

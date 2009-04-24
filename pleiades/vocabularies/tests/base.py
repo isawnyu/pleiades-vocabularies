@@ -50,5 +50,8 @@ class PleiadesVocabularyFunctionalTestCase(ptc.FunctionalTestCase):
     def afterSetUp(self):
         try:
             self.folder.invokeFactory('Folder', id='vocabularies')
+            # self.folder['vocabularies'].invokeFactory('PleiadesVocabulary', id='quality')
+            # self.folder['vocabularies']['quality'].invokeFactory('PleiadesVocabularyTerm', id='good', key='good', value='Good')
+            # 
         except:
             pass

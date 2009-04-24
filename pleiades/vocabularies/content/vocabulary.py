@@ -11,8 +11,8 @@ else:
     from Products.Archetypes.atapi import *
 from Products.ATVocabularyManager.types.simple.vocabulary import SimpleVocabulary
 
-from AccessControl import ClassSecurityInfo
-from Products.CMFCore.permissions import AddPortalContent
+from AccessControl import ClassSecurityInfo, getSecurityManager
+from Products.CMFCore.permissions import AddPortalContent, View
 from Products.CMFCore.utils import getToolByName
 from Products.Archetypes.interfaces import IVocabulary
 from Products.Archetypes.utils import make_uuid
@@ -22,7 +22,7 @@ from Products.Archetypes.utils import OrderedDict
 from Products.ATVocabularyManager.tools import registerVocabularyContainer
 from Products.ATVocabularyManager.config import TOOL_NAME as VOCABTOOL_NAME
 
-from pleiades.vocabularies.content.interfaces import IPleiadesVocabulary
+from pleiades.vocabularies.content.interfaces import IPleiadesVocabulary, IPleiadesVocabularyTerm
 from pleiades.vocabularies.config import PROJECTNAME
 
 
@@ -99,18 +99,20 @@ class PleiadesVocabulary(SimpleVocabulary):
     }
     
     def getTermItems(self, all=False):
-        """Use a catalog query to get (key, value) tuples of published
+        """Securely get (key, value) tuples of published
         terms."""
-        catalog = getToolByName(self, 'portal_catalog')
-        query = dict(
-                    portal_type='PleiadesVocabularyTerm',
-                    review_state='published',
-                    path='/'.join(self.getPhysicalPath())
-                    )
-        if all == True:
-            del query['review_state']
-        results = catalog(query)
-        return [(r.getTermKey, r.getTermValue) for r in results]
+        # 
+        # catalog = getToolByName(self, 'portal_catalog')
+        # query = dict(
+        #             portal_type='PleiadesVocabularyTerm',
+        #             # review_state='published',
+        #             path='/'.join(self.getPhysicalPath())
+        #             )
+        # if all == True:
+        #             del query['review_state']
+        # results = catalog(query)
+        sm = getSecurityManager()
+        return [(r.getTermKey(), r.getTermValue()) for r in self.values() if IPleiadesVocabularyTerm.providedBy(r) and sm.checkPermission(View, r)]
     
     def getDisplayList(self, instance):
         """Returns a object of class DisplayList as defined in
