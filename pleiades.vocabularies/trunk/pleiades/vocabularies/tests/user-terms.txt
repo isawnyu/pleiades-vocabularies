@@ -12,7 +12,7 @@ Check initial, published terms
 Add a new term
 
   >>> self.login()
-  >>> self.setRoles(['Member', 'Contributor'])
+  >>> self.setRoles(['Member'])
   >>> _ = vocab.invokeFactory('PleiadesVocabularyTerm', id='bogus', title='Bogus', description='Completely Bogus')
   >>> vocab.getTermItems()
   [('accurate', 'accurate'), ('false', 'false'), ('inaccurate', 'inaccurate'), ('bogus', 'Bogus')]
