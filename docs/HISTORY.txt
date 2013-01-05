@@ -1,9 +1,6 @@
 Changelog for pleiades.vocabulary
 
-    (name of developer listed in brackets)
-
-pleiades.vocabulary - 0.1 Unreleased
-
-    - Initial package structure.
-      [zopeskel]
+0.2 (2011-11-22)
+----------------
+- Filter terms by view permission in getSortedKeys.
 
