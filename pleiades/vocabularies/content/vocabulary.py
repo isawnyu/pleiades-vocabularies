@@ -2,6 +2,8 @@
 A vocabulary is a container for key/value pairs. This Vocabulary extends ATVM's SimpleVocabulary into workflowed user-space. It exposes only published terms.
 """
 
+import re
+
 from zope.interface import implements
 
 from Products.ATVocabularyManager.config import *
@@ -25,6 +27,7 @@ from Products.ATVocabularyManager.config import TOOL_NAME as VOCABTOOL_NAME
 from pleiades.vocabularies.content.interfaces import IPleiadesVocabulary, IPleiadesVocabularyTerm
 from pleiades.vocabularies.config import PROJECTNAME
 
+SORT_METHOD_TEMPORAL = "Sort temporally (increasing date)"
 
 class PleiadesVocabulary(SimpleVocabulary):
     
@@ -88,7 +91,7 @@ class PleiadesVocabulary(SimpleVocabulary):
             description_msgid = "help_sort_method",
             i18n_domain = "atvocabularymanager",
             ),
-            vocabulary = VOCABULARY_SORT_ORDERS
+            vocabulary = VOCABULARY_SORT_ORDERS + [SORT_METHOD_TEMPORAL]
         ),
     ))
     
@@ -101,18 +104,10 @@ class PleiadesVocabulary(SimpleVocabulary):
     def getTermItems(self, all=False):
         """Securely get (key, value) tuples of published
         terms."""
-        # 
-        # catalog = getToolByName(self, 'portal_catalog')
-        # query = dict(
-        #             portal_type='PleiadesVocabularyTerm',
-        #             # review_state='published',
-        #             path='/'.join(self.getPhysicalPath())
-        #             )
-        # if all == True:
-        #             del query['review_state']
-        # results = catalog(query)
         sm = getSecurityManager()
-        return [(r.getTermKey(), r.getTermValue()) for r in self.values() if IPleiadesVocabularyTerm.providedBy(r) and sm.checkPermission(View, r)]
+        return [(r.getTermKey(), r.getTermValue()) for r in self.values() \
+            if IPleiadesVocabularyTerm.providedBy(r) \
+            and sm.checkPermission(View, r) ]
     
     def getDisplayList(self, instance):
         """Returns a object of class DisplayList as defined in
@@ -187,11 +182,33 @@ class PleiadesVocabulary(SimpleVocabulary):
         if sortMethod == SORT_METHOD_LEXICO_VALUES:
             # returns keys sorted by lexicogarphic order of VALUES
             sm = getSecurityManager()
-            terms = [t for t in self.contentValues() if IPleiadesVocabularyTerm.providedBy(t) and sm.checkPermission(View, t)]
-            terms.sort(lambda x,y: cmp(x.getVocabularyValue(),y.getVocabularyValue()))
+            terms = [t for t in self.contentValues() \
+                if IPleiadesVocabularyTerm.providedBy(t) \
+                and sm.checkPermission(View, t) ]
+            terms.sort(
+                lambda x,y: cmp(
+                    x.getVocabularyValue(), y.getVocabularyValue()) )
             return [term.getVocabularyKey() for term in terms]
         if sortMethod == SORT_METHOD_FOLDER_ORDER:
             return keys
+        if sortMethod == SORT_METHOD_TEMPORAL:
+            sm = getSecurityManager()
+            kvdict = dict((k,t) for k,t in self.contentItems() \
+                if IPleiadesVocabularyTerm.providedBy(t) \
+                and sm.checkPermission(View, t) )
+            def range(key):
+                term = kvdict[key]
+                descr = term.Description()
+                m = re.search(
+                    r"\[\[(-{0,1}\d*\.{0,1}\d*)\s*,\s*(-{0,1}\d*\.{0,1}\d*)\]\]", 
+                    descr)
+                if m is not None:
+                    min = float(m.group(1))
+                    max = float(m.group(2))
+                    return min, max
+                else:
+                    return None
+            keys.sort(lambda x, y: cmp(range(x), range(y)))
         # fallback
         return keys
 
