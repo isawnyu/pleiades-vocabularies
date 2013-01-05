@@ -186,7 +186,8 @@ class PleiadesVocabulary(SimpleVocabulary):
             return keys
         if sortMethod == SORT_METHOD_LEXICO_VALUES:
             # returns keys sorted by lexicogarphic order of VALUES
-            terms = self.contentValues()
+            sm = getSecurityManager()
+            terms = [t for t in self.contentValues() if IPleiadesVocabularyTerm.providedBy(t) and sm.checkPermission(View, t)]
             terms.sort(lambda x,y: cmp(x.getVocabularyValue(),y.getVocabularyValue()))
             return [term.getVocabularyKey() for term in terms]
         if sortMethod == SORT_METHOD_FOLDER_ORDER:
