@@ -1,5 +1,9 @@
 Changelog for pleiades.vocabulary
 
+0.3 (2013-01-05)
+----------------
+- Temporally sort time periods keys.
+
 0.2 (2011-11-22)
 ----------------
 - Filter terms by view permission in getSortedKeys.
