@@ -5,10 +5,6 @@
   i18n_domain="pleiades.vocabularies"
   >
 
-  <include package="zope.app.component" file="meta.zcml"/>
-  <include package="zope.app.security" file="meta.zcml"/> 
-  <include package="zope.app.security"/>
-  
   <five:registerPackage package="." initialize=".initialize" />
     
   <genericsetup:registerProfile
