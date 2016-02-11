@@ -8,11 +8,11 @@ from AccessControl import ClassSecurityInfo, getSecurityManager
 from pleiades.vocabularies.config import PROJECTNAME
 from pleiades.vocabularies.content.interfaces import IPleiadesVocabulary
 from pleiades.vocabularies.content.interfaces import IPleiadesVocabularyTerm
-from Products.Archetypes.atapi import *
+from Products.Archetypes import atapi
 from Products.Archetypes.interfaces import IVocabulary
 from Products.Archetypes.utils import DisplayList
 from Products.Archetypes.utils import OrderedDict
-from Products.ATVocabularyManager.config import *
+from Products.ATVocabularyManager import config as atvm_config
 from Products.ATVocabularyManager.types.simple.vocabulary import SimpleVocabulary
 from Products.CMFCore.permissions import View
 from Products.CMFCore.utils import getToolByName
@@ -39,8 +39,8 @@ class PleiadesVocabulary(SimpleVocabulary):
 
     _at_rename_after_creation = True
 
-    schema = BaseFolderSchema + Schema((
-        StringField(
+    schema = atapi.BaseFolderSchema + atapi.Schema((
+        atapi.StringField(
             'id',
             required=1, ## Still actually required, but
                         ## the widget will supply the missing value
@@ -49,7 +49,7 @@ class PleiadesVocabulary(SimpleVocabulary):
             accessor="getId",
             mutator="setId",
             default='',
-            widget=StringWidget(
+            widget=atapi.StringWidget(
                 label="Vocabulary Name",
                 label_msgid="label_vocab_name",
                 description="Should not contain spaces, underscores or mixed case.",
@@ -58,14 +58,14 @@ class PleiadesVocabulary(SimpleVocabulary):
             ),
         ),
 
-        TextField(
+        atapi.TextField(
             'description',
             default='',
             required=0,
             searchable=0,
             accessor="Description",
-            storage=MetadataStorage(),
-            widget=TextAreaWidget(
+            storage=atapi.MetadataStorage(),
+            widget=atapi.TextAreaWidget(
                 description="Enter a brief description",
                 description_msgid="help_description",
                 label="Description",
@@ -75,19 +75,19 @@ class PleiadesVocabulary(SimpleVocabulary):
             ),
         ),
 
-        StringField(
+        atapi.StringField(
             "sortMethod",
-            default=SORT_METHOD_LEXICO_VALUES,
+            default=atvm_config.SORT_METHOD_LEXICO_VALUES,
             required=0,  # smooth upgrades from 1.0.0-beta2
             searchable=0,
-            widget=SelectionWidget(
+            widget=atapi.SelectionWidget(
                 label="Sort method",
                 label_msgid="label_sort_method",
                 description="Sort method used for displaying vocabulary terms",
                 description_msgid="help_sort_method",
                 i18n_domain="atvocabularymanager",
             ),
-            vocabulary=VOCABULARY_SORT_ORDERS + [SORT_METHOD_TEMPORAL]
+            vocabulary=atvm_config.VOCABULARY_SORT_ORDERS + [SORT_METHOD_TEMPORAL]
         ),
     ))
 
@@ -172,10 +172,10 @@ class PleiadesVocabulary(SimpleVocabulary):
         if not hasattr(self, 'sortMethod'):
             # smooth upgrade from previous releases
             return keys
-        if sortMethod == SORT_METHOD_LEXICO_KEYS:
+        if sortMethod == atvm_config.SORT_METHOD_LEXICO_KEYS:
             keys.sort()
             return keys
-        if sortMethod == SORT_METHOD_LEXICO_VALUES:
+        if sortMethod == atvm_config.SORT_METHOD_LEXICO_VALUES:
             # returns keys sorted by lexicogarphic order of VALUES
             sm = getSecurityManager()
             terms = [
@@ -187,7 +187,7 @@ class PleiadesVocabulary(SimpleVocabulary):
                 lambda x, y: cmp(
                     x.getVocabularyValue(), y.getVocabularyValue()))
             return [term.getVocabularyKey() for term in terms]
-        if sortMethod == SORT_METHOD_FOLDER_ORDER:
+        if sortMethod == atvm_config.SORT_METHOD_FOLDER_ORDER:
             return keys
         if sortMethod == SORT_METHOD_TEMPORAL:
             sm = getSecurityManager()
@@ -214,4 +214,4 @@ class PleiadesVocabulary(SimpleVocabulary):
         return keys
 
 
-registerType(PleiadesVocabulary, PROJECTNAME)
+atapi.registerType(PleiadesVocabulary, PROJECTNAME)
