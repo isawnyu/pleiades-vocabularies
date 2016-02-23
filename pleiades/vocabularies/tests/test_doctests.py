@@ -1,19 +1,21 @@
-import unittest
-import doctest
-from Testing import ZopeTestCase as ztc
-
 from pleiades.vocabularies.tests import base
+from Testing import ZopeTestCase as ztc
+import doctest
+import unittest
+
 optionflags = doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS
+
+
+class TestCase(base.PleiadesVocabularyFunctionalTestCase):
+    pass
+
 
 def test_suite():
     return unittest.TestSuite([
         ztc.FunctionalDocFileSuite(
             'user-terms.txt',
             package='pleiades.vocabularies.tests',
-            test_class=base.PleiadesVocabularyFunctionalTestCase,
+            test_class=TestCase,
             optionflags=optionflags
             ),
         ])
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')

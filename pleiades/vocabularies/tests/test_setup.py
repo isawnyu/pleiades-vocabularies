@@ -1,4 +1,3 @@
-import unittest
 from pleiades.vocabularies.tests.base import PleiadesVocabularyFunctionalTestCase
 from Products.CMFCore.utils import getToolByName
 
@@ -10,7 +9,7 @@ class TestSetup(PleiadesVocabularyFunctionalTestCase):
         self.uvocabs = self.portal['vocabularies']
         self.acl_users = getToolByName(self.portal, 'acl_users')
         self.types = getToolByName(self.portal, 'portal_types')
-    
+
     def test_vocabs(self):
         self.failUnless('name-accuracy' in self.vocabs.keys())
         self.failUnless('association-certainty' in self.vocabs.keys())
@@ -34,17 +33,15 @@ class TestSetup(PleiadesVocabularyFunctionalTestCase):
     def test_vocab_data(self):
         v = self.vocabs['name-accuracy']
         t = v.getTarget()
-        self.assertEquals(t.getVocabularyDict(all=True), {'accurate': 'accurate', 'false': 'false', 'inaccurate': 'inaccurate'})
+        self.assertEquals(
+            t.getVocabularyDict(all=True),
+            {'accurate': 'accurate', 'false': 'false', 'inaccurate': 'inaccurate'})
         d = v.getVocabularyDict(v)
-        self.assertEquals(d, {'accurate': 'accurate', 'false': 'false', 'inaccurate': 'inaccurate'})
-        
+        self.assertEquals(
+            d, {'accurate': 'accurate', 'false': 'false', 'inaccurate': 'inaccurate'})
+
     def test_namedvocab(self):
         from Products.ATVocabularyManager.namedvocabulary import NamedVocabulary
         nv = NamedVocabulary('name-accuracy')
         d = nv.getVocabularyDict(self.portal)
         self.assertEquals(d, {'accurate': 'accurate', 'false': 'false', 'inaccurate': 'inaccurate'})
-
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestSetup))
-    return suite
