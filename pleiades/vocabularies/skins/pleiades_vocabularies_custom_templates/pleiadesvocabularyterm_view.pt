@@ -8,9 +8,9 @@
     <body>
       <metal:body_macro metal:define-macro="body">
 
-        <p class="documentDescription">
+        <!--p class="documentDescription">
           <metal:field use-macro="python:here.widget('description', mode='view')">Description</metal:field>
-        </p>
+        </p-->
 
         <div
             tal:define="portal python:here.portal_url.getPortalObject();
