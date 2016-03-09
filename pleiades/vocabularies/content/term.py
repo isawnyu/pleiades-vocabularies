@@ -76,6 +76,10 @@ class PleiadesVocabularyTerm(SimpleVocabularyTerm):
         # terms of flat vocabularies can savely return their key
         return [self.getTermKey(),]
 
+    def Description(self):
+        # avoid unnecessarily transforming description
+        return self.getField('description').getRaw(self)
+
     def processForm(self, data=1, metadata=0, REQUEST=None, values=None):
         request = REQUEST or self.REQUEST
         values = request.form
