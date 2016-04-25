@@ -16,16 +16,16 @@ def registry_vocabulary(field, value_filter=None):
 
     def vocabulary_factory(context):
         registry = getUtility(IRegistry)
-        values = registry.get(path, {})
-        values = values.keys()
+        values = registry.get(path, [])
         values.sort()
         terms = []
         for value in values:
-            terms.append(SimpleTerm(
-                value=value,
-                token=value.encode('raw_unicode_escape'),
-                title=value,
-                ))
+            if not value['hidden']:
+                terms.append(SimpleTerm(
+                    value=value['id'],
+                    token=value['id'].encode('raw_unicode_escape'),
+                    title=value['description'],
+                    ))
         return SimpleVocabulary(terms)
 
     directlyProvides(vocabulary_factory, IVocabularyFactory)
