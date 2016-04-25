@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<object
+    name="portal_controlpanel"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="pleiades.vocabularies"
+    purge="False">
+
+    <configlet
+        title="Pleiades Settings"
+        action_id="pleiades_settings"
+        appId="pleiades.vocabularies"
+        category="Products"
+        condition_expr=""
+        url_expr="string:${portal_url}/@@pleiades-settings"
+        visible="True"
+        i18n:attributes="title">
+            <permission>Plone Site Setup: Overview</permission>
+    </configlet>
+
+</object>

@@ -1,11 +1,14 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
   xmlns:five="http://namespaces.zope.org/five"
+  xmlns:grok="http://namespaces.zope.org/grok"
   xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
   i18n_domain="pleiades.vocabularies"
   >
 
   <five:registerPackage package="." initialize=".initialize" />
+  <includeDependencies package="." />
+  <grok:grok package="." />
     
   <genericsetup:registerProfile
     name="default"
@@ -25,7 +28,16 @@
     title="Pleiades: Add Vocabulary Term"
     />
 
+  <include package=".browser"/>
   <include package=".content"/>
   <include file="skins.zcml"/>
   
+  <genericsetup:upgradeDepends
+      source="*"
+      destination="1"
+      profile="pleiades.vocabularies:default"
+      title="Install registry vocsbulary"
+      import_steps="plone.app.registry controlpanel"
+      />
+
 </configure>

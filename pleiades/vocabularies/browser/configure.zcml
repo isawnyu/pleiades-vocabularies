@@ -1,0 +1,20 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:grok="http://namespaces.zope.org/grok"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="pleiades.vocabularies">
+
+  <include package="plone.app.registry" />
+  <include package="plone.app.controlpanel" />
+
+  <browser:page
+      name="pleiades-settings"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".controlpanel.PleiadesSettingsControlPanel"
+      permission="plone.app.controlpanel.Overview"
+      />
+
+</configure>
