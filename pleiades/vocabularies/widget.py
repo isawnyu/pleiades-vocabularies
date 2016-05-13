@@ -19,7 +19,7 @@ class TimePeriodSelectionWidget(TypesWidget):
     def render_own_label(self):
         return True
 
-    security.declarePublic('render_own_label')
+    security.declarePublic('show_term')
     def show_term(self, item):
         time_periods = get_vocabulary('time_periods')
         for term in time_periods:
