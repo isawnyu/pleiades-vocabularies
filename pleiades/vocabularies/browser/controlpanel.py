@@ -16,9 +16,6 @@ class PleiadesSettingsEditForm(controlpanel.RegistryEditForm):
         self.fields['time_periods'].widgetFactory = DataGridFieldFactory
         self.fields['time_periods'].allow_insert = True
 
-    def updateWidgets(self):
-        super(PleiadesSettingsEditForm, self).updateWidgets()
-
     def datagridUpdateWidgets(self, subform, widgets, widget):
         widgets['id'].size = 20
         widgets['lower_bound'].size = 5

@@ -4,8 +4,6 @@ from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
-from five import grok
-
 from plone.registry.interfaces import IRegistry
 
 from pleiades.vocabularies.interfaces import IPleiadesSettings
@@ -20,12 +18,11 @@ def registry_vocabulary(field, value_filter=None):
         values.sort()
         terms = []
         for value in values:
-            if not value['hidden']:
-                terms.append(SimpleTerm(
-                    value=value['id'],
-                    token=value['id'].encode('raw_unicode_escape'),
-                    title=value['description'],
-                    ))
+            terms.append(SimpleTerm(
+                value=value['id'],
+                token=value['id'].encode('raw_unicode_escape'),
+                title=value['title'],
+                ))
         return SimpleVocabulary(terms)
 
     directlyProvides(vocabulary_factory, IVocabularyFactory)
@@ -33,6 +30,10 @@ def registry_vocabulary(field, value_filter=None):
 
 
 time_periods = IPleiadesSettings['time_periods']
-vocabulary = registry_vocabulary(time_periods)
-vocabulary_name = 'pleiades.vocabularies.time_periods'
-grok.global_utility(vocabulary, name=vocabulary_name, direct=True)
+time_periods_vocabulary = registry_vocabulary(time_periods)
+
+
+def get_vocabulary(name):
+    registry = getUtility(IRegistry)
+    settings = registry.forInterface(IPleiadesSettings, False)
+    return getattr(settings, name)

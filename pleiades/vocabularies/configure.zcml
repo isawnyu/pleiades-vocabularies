@@ -1,14 +1,12 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
   xmlns:five="http://namespaces.zope.org/five"
-  xmlns:grok="http://namespaces.zope.org/grok"
   xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
   i18n_domain="pleiades.vocabularies"
   >
 
   <five:registerPackage package="." initialize=".initialize" />
   <includeDependencies package="." />
-  <grok:grok package="." />
     
   <genericsetup:registerProfile
     name="default"
@@ -38,6 +36,12 @@
       profile="pleiades.vocabularies:default"
       title="Install registry vocsbulary"
       import_steps="plone.app.registry controlpanel"
+      />
+
+  <utility
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      component="pleiades.vocabularies.vocabularies.time_periods_vocabulary"
+      name="pleiades.vocabularies.time_periods"
       />
 
 </configure>
