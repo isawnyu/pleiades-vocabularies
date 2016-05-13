@@ -4,6 +4,7 @@ import os
 from imsvdex.vdex import VDEXManager
 
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.WorkflowCore import WorkflowException
 
 
 logger = logging.getLogger('pleiades.configuration.setuphandlers')
@@ -46,13 +47,19 @@ def installVocabularies(context):
             continue
         if not vocabname in vocabs.contentIds():
             vid = vocabs.invokeFactory('PleiadesVocabulary', vocabname)
-            wftool.doActionFor(vocabs[vid], action='publish')
+            try:
+                wftool.doActionFor(vocabs[vid], action='publish')
+            except WorkflowException:
+                pass
             vdex = VDEXManager(data)
             for key in vdex.getVocabularyDict().keys():
                 value = vdex.getTermCaptionById(key)
                 descr = vdex.getTermDescriptionById(key).capitalize()
                 tid = vocabs[vid].invokeFactory('PleiadesVocabularyTerm', key, title=value, description=descr)
-                wftool.doActionFor(vocabs[vid][tid], action='publish')
+                try:
+                    wftool.doActionFor(vocabs[vid][tid], action='publish')
+                except WorkflowException:
+                    pass
             if vid in atvm.contentIds():
                 atvm.manage_delObjects([vid])
             atvm.invokeFactory('AliasVocabulary', vid, target=vocabs[vid])
