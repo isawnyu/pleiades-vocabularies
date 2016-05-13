@@ -8,6 +8,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from pleiades.vocabularies.vocabularies import get_vocabulary
 
+
 @implementer(IPublishTraverse)
 class TimePeriodsView(BrowserView):
 

@@ -20,6 +20,7 @@
       name="time-periods"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".time_periods.TimePeriodsView"
+      allowed_attributes="periods"
       permission="zope2.View"
       />
 
