@@ -1,3 +1,5 @@
+from binascii import b2a_qp
+
 from zope.component import getUtility
 from zope.interface import directlyProvides
 from zope.schema.interfaces import IVocabularyFactory
@@ -20,7 +22,7 @@ def registry_vocabulary(field, value_filter=None):
         for value in values:
             terms.append(SimpleTerm(
                 value=value['id'],
-                token=value['id'].encode('raw_unicode_escape'),
+                token=b2a_qp(value['id'].encode('utf-8')),
                 title=value['title'],
                 ))
         return SimpleVocabulary(terms)
