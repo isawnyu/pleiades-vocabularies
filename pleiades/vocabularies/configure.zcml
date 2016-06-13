@@ -34,7 +34,7 @@
       source="*"
       destination="1"
       profile="pleiades.vocabularies:default"
-      title="Install registry vocsbulary"
+      title="Install registry vocabulary"
       import_steps="plone.app.registry controlpanel"
       />
 
