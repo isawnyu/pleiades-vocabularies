@@ -13,6 +13,9 @@ class IPeriodSchema(Interface):
     same_as = schema.URI(title=u'Same As', required=False)
     hidden = schema.Bool(title=u'Hidden', default=False)
 
+class IVocabTerm(Interface):
+    id = schema.TextLine(title=u'Id')
+    title = schema.TextLine(title=u'Title')
 
 class IPleiadesSettings(Interface):
     """Global Pleiades site specific settings"""
@@ -20,4 +23,10 @@ class IPleiadesSettings(Interface):
         title=u'Time Periods',
         value_type=DictRow(title=u'Period',
                            schema=IPeriodSchema)
+        )
+
+    arch_remains = schema.List(
+        title=u'Archaeological Remains',
+        value_type=DictRow(title=u'Remains Entry',
+                           schema=IVocabTerm)
         )

@@ -34,6 +34,9 @@ def registry_vocabulary(field, value_filter=None):
 time_periods = IPleiadesSettings['time_periods']
 time_periods_vocabulary = registry_vocabulary(time_periods)
 
+arch_remains = IPleiadesSettings['arch_remains']
+arch_remains_vocabulary = registry_vocabulary(arch_remains)
+
 
 def get_vocabulary(name):
     registry = getUtility(IRegistry)
