@@ -17,6 +17,8 @@ def registry_vocabulary(field, value_filter=None):
     def vocabulary_factory(context):
         registry = getUtility(IRegistry)
         values = registry.get(path, [])
+         if values is None:
+            values = []
         values.sort()
         terms = []
         for value in values:
