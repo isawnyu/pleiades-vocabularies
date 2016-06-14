@@ -34,9 +34,18 @@
       source="*"
       destination="1"
       profile="pleiades.vocabularies:default"
-      title="Install registry vocsbulary"
+      title="Install registry vocabulary"
       import_steps="plone.app.registry controlpanel"
       />
+
+  <genericsetup:upgradeStep
+    profile="pleiades.vocabularies:default"
+    source="0001"
+    destination="0002"
+    title="Install collective.z3cform.datagridfield"
+    description=""
+    handler=".setuphandlers.install_datagrid_field"
+    />
 
   <utility
       provides="zope.schema.interfaces.IVocabularyFactory"

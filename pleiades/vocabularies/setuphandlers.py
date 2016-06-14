@@ -14,7 +14,7 @@ def importVarious(context):
     if context.readDataFile('pleiades.vocabularies_various.txt') is None:
         return
     installVocabularies(context)
-    
+
 
 def installVocabularies(context):
     """creates/imports the atvm vocabs."""
@@ -57,4 +57,9 @@ def installVocabularies(context):
                 atvm.manage_delObjects([vid])
             atvm.invokeFactory('AliasVocabulary', vid, target=vocabs[vid])
     return None
-            
+
+
+def install_datagrid_field(context):
+    qi = getToolByName(context, 'portal_quickinstaller')
+    if not qi.isProductInstalled('collective.z3cform.datagridfield'):
+        qi.installProduct('collective.z3cform.datagridfield')
