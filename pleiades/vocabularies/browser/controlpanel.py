@@ -19,17 +19,17 @@ class PleiadesSettingsEditForm(controlpanel.RegistryEditForm):
         self.fields['arch_remains'].allow_insert = True
 
     def datagridUpdateWidgets(self, subform, widgets, widget):
-        if 'id' in widgets['id']:
+        if 'id' in widgets.keys():
             widgets['id'].size = 20
-        if 'lower_bound' in widgets:
+        if 'lower_bound' in widgets.keys():
             widgets['lower_bound'].size = 5
-        if 'upper_bound' in widgets['upper_bound']:
+        if 'upper_bound' in widgets.keys():
             widgets['upper_bound'].size = 5
-        if 'title' in widgets['title']:
+        if 'title' in widgets.keys():
             widgets['title'].size = 20
-        if 'description' in widgets['description']:
+        if 'description' in widgets.keys():
             widgets['description'].size = 30
-        if 'same_as' in widgets['same_as']:
+        if 'same_as' in widgets.keys():
             widgets['same_as'].size = 20
 
 
