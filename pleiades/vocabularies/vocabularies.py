@@ -17,7 +17,9 @@ def registry_vocabulary(field, value_filter=None):
     def vocabulary_factory(context):
         registry = getUtility(IRegistry)
         values = registry.get(path, [])
-        values.sort()
+        if values is None:
+            values = []
+        values = sorted(values, key=lambda k: k['lower_bound'])
         terms = []
         for value in values:
             terms.append(SimpleTerm(
