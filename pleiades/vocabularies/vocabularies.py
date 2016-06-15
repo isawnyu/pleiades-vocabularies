@@ -40,4 +40,5 @@ time_periods_vocabulary = registry_vocabulary(time_periods)
 def get_vocabulary(name):
     registry = getUtility(IRegistry)
     settings = registry.forInterface(IPleiadesSettings, False)
-    return getattr(settings, name)
+    vocabulary = getattr(settings, name)
+    return sorted(vocabulary, key=lambda k: k['lower_bound'])
