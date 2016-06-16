@@ -88,17 +88,18 @@ def installVocabularies(context):
                                                   upper_bound=max,
                                                   hidden=False))
 
-    # prepopulate arch_remains vocab
-    settings.arch_remains = []
-    vocab_data = [{'id':'unknown', 'title':'Unknown'},
-                  {'id':'none', 'title':'None'},
-                  {'id':'traces', 'title':'Traces'},
-                  {'id':'substantive', 'title':'Substantive'},
-                  {'id':'restored', 'title':'Restored'},
-                  {'id':'notvisible', 'title':'Not visible'}]
-    for vocab_entry in vocab_data:
-        settings.arch_remains.append(dict(id=vocab_entry['id'],
-                                          title=vocab_entry['title']))
+    # prepopulate arch_remains vocab - if uninitialized
+    if not settings.arch_remains:
+        settings.arch_remains = []
+        vocab_data = [{'id':'unknown', 'title':'Unknown'},
+                      {'id':'none', 'title':'None'},
+                      {'id':'traces', 'title':'Traces'},
+                      {'id':'substantive', 'title':'Substantive'},
+                      {'id':'restored', 'title':'Restored'},
+                      {'id':'notvisible', 'title':'Not visible'}]
+        for vocab_entry in vocab_data:
+            settings.arch_remains.append(dict(id=vocab_entry['id'],
+                                              title=vocab_entry['title']))
 
     return None
 
