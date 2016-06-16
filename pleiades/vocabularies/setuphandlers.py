@@ -36,6 +36,10 @@ def installVocabularies(context):
         'ancient-name-languages',
         'name-types',
         ]
+
+    registry = getUtility(IRegistry)
+    settings = registry.forInterface(IPleiadesSettings, False)
+
     for vocabname in vocab_names:
         vdexpath = os.path.join(
             os.path.dirname(__file__), 'data', '%s.vdex' % vocabname
@@ -64,8 +68,6 @@ def installVocabularies(context):
                 atvm.manage_delObjects([vid])
             atvm.invokeFactory('AliasVocabulary', vid, target=vocabs[vid])
         if vocabname == 'time-periods':
-            registry = getUtility(IRegistry)
-            settings = registry.forInterface(IPleiadesSettings, False)
             vdex = VDEXManager(data)
             settings.time_periods = []
             for key in vdex.getVocabularyDict().keys():
@@ -85,6 +87,19 @@ def installVocabularies(context):
                                                   lower_bound=min,
                                                   upper_bound=max,
                                                   hidden=False))
+
+    # prepopulate arch_remains vocab
+    settings.arch_remains = []
+    vocab_data = [{'id':'unknown', 'title':'Unknown'},
+                  {'id':'none', 'title':'None'},
+                  {'id':'traces', 'title':'Traces'},
+                  {'id':'substantive', 'title':'Substantive'},
+                  {'id':'restored', 'title':'Restored'},
+                  {'id':'notvisible', 'title':'Not visible'}]
+    for vocab_entry in vocab_data:
+        settings.arch_remains.append(dict(id=vocab_entry['id'],
+                                          title=vocab_entry['title']))
+
     return None
 
 
