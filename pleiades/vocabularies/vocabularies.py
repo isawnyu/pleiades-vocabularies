@@ -12,14 +12,9 @@ from pleiades.vocabularies.interfaces import IPleiadesSettings
 
 
 def registry_vocabulary(field, value_filter=None):
-    path = field.interface.__identifier__ + '.' + field.__name__
 
     def vocabulary_factory(context):
-        registry = getUtility(IRegistry)
-        values = registry.get(path, [])
-        if values is None:
-            values = []
-        values.sort()
+        values = get_vocabulary(field.__name__)
         terms = []
         for value in values:
             terms.append(SimpleTerm(
@@ -42,5 +37,11 @@ arch_remains_vocabulary = registry_vocabulary(arch_remains)
 
 def get_vocabulary(name):
     registry = getUtility(IRegistry)
-    settings = registry.forInterface(IPleiadesSettings, False)
-    return getattr(settings, name)
+    settings = registry.forInterface(IPleiadesSettings)
+    vocabulary = getattr(settings, name)
+    if vocabulary is None:
+        return []
+    if name == 'time_periods':
+        return sorted(vocabulary, key=lambda k: k['lower_bound'])
+    else:
+        return vocabulary
