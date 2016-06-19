@@ -18,9 +18,16 @@
 
   <browser:page
       name="time-periods"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="pleiades.vocabularies.content.interfaces.IPleiadesVocabularyFolder"
       class=".time_periods.TimePeriodsView"
       allowed_attributes="periods"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      name="pleiades-vocabulary-listing"
+      for="pleiades.vocabularies.content.interfaces.IPleiadesVocabularyFolder"
+      class=".time_periods.PleiadesVocabularyFolderView"
       permission="zope2.View"
       />
 

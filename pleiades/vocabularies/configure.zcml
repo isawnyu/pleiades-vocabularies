@@ -47,6 +47,15 @@
     handler=".setuphandlers.install_datagrid_field"
     />
 
+  <genericsetup:upgradeStep
+    profile="pleiades.vocabularies:default"
+    source="0002"
+    destination="0003"
+    title="Replace old time periods with new registry vocabulary"
+    description=""
+    handler=".setuphandlers.remove_old_time_periods"
+    />
+
   <utility
       provides="zope.schema.interfaces.IVocabularyFactory"
       component="pleiades.vocabularies.vocabularies.time_periods_vocabulary"

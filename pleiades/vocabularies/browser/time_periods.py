@@ -19,7 +19,7 @@ class TimePeriodsView(BrowserView):
     def periods(self):
         periods = get_vocabulary('time_periods')
         return periods
-     
+
     def publishTraverse(self, request, name):
         self.term_id = name
         term = [p for p in self.periods if p['id'] == name]
@@ -45,8 +45,8 @@ class TimePeriodsView(BrowserView):
 
         for weight, preferred in user_preferences:
             if 'json' in preferred or 'javascript' in preferred:
-		response.setHeader('Content-Type', 'application/json')
-		return self.__json__()
+                response.setHeader('Content-Type', 'application/json')
+                return self.__json__()
             if 'html' in preferred:
                 return self.index()
 
@@ -59,9 +59,16 @@ class TimePeriodsView(BrowserView):
             return json.dumps(self.periods)
 
     def to_ad(self, year):
-	sign = (year > 0) * 2 - 1
-	if sign >= 0:
-	    return "AD %d" % year
-	else:
-	    return "%d BC" % (sign * year)
+        sign = (year > 0) * 2 - 1
+        if sign >= 0:
+            return "AD %d" % year
+        else:
+            return "%d BC" % (sign * year)
 
+
+class PleiadesVocabularyFolderView(BrowserView):
+
+    index = ViewPageTemplateFile('vocabulary_listing.pt')
+
+    def __call__(self):
+        return self.index()
