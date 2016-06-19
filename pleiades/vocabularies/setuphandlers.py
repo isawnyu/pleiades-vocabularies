@@ -33,11 +33,14 @@ def installVocabularies(context):
         'association-certainty',
         'place-types',
         'attestation-confidence',
-        'time-periods',
         'name-completeness',
         'ancient-name-languages',
         'name-types',
         ]
+
+    registry = getUtility(IRegistry)
+    settings = registry.forInterface(IPleiadesSettings, False)
+
     for vocabname in vocab_names:
         vdexpath = os.path.join(
             os.path.dirname(__file__), 'data', '%s.vdex' % vocabname
@@ -65,29 +68,43 @@ def installVocabularies(context):
             if vid in atvm.contentIds():
                 atvm.manage_delObjects([vid])
             atvm.invokeFactory('AliasVocabulary', vid, target=vocabs[vid])
-        if vocabname == 'time-periods':
-            registry = getUtility(IRegistry)
-            settings = registry.forInterface(IPleiadesSettings, False)
-            if not settings.time_periods:
-                vdex = VDEXManager(data)
-                settings.time_periods = []
-                for key in vdex.getVocabularyDict().keys():
-                    value = vdex.getTermCaptionById(key)
-                    descr = vdex.getTermDescriptionById(key).capitalize()
-                    min = None
-                    max = None
-                    m = re.search(
-                        r"\[\[(-{0,1}\d*\.{0,1}\d*)\s*,\s*(-{0,1}\d*\.{0,1}\d*)\]\]",
-                        descr)
-                    if m is not None:
-                        min = int(m.group(1))
-                        max = int(m.group(2))
-                    settings.time_periods.append(dict(id=key,
-                                                      title=value,
-                                                      description=descr,
-                                                      lower_bound=min,
-                                                      upper_bound=max,
-                                                      hidden=False))
+
+    if not settings.time_periods:
+        vdex = VDEXManager(data)
+        settings.time_periods = []
+        for key in vdex.getVocabularyDict().keys():
+            value = vdex.getTermCaptionById(key)
+            descr = vdex.getTermDescriptionById(key).capitalize()
+            min = None
+            max = None
+            m = re.search(
+                r"\[\[(-{0,1}\d*\.{0,1}\d*)\s*,\s*(-{0,1}\d*\.{0,1}\d*)\]\]",
+                descr)
+            if m is not None:
+                min = int(m.group(1))
+                max = int(m.group(2))
+            settings.time_periods.append(dict(id=key,
+                                              title=value,
+                                              description=descr,
+                                              lower_bound=min,
+                                              upper_bound=max,
+                                              hidden=False))
+
+    # prepopulate arch_remains vocab - if uninitialized
+    if not settings.arch_remains:
+        settings.arch_remains = []
+        vocab_data = [
+            {'id': 'unknown', 'title': 'Unknown'},
+            {'id': 'none', 'title': 'None'},
+            {'id': 'traces', 'title': 'Traces'},
+            {'id': 'substantive', 'title': 'Substantive'},
+            {'id': 'restored', 'title': 'Restored'},
+            {'id': 'notvisible', 'title': 'Not visible'},
+        ]
+        for vocab_entry in vocab_data:
+            settings.arch_remains.append(dict(id=vocab_entry['id'],
+                                              title=vocab_entry['title']))
+
     return None
 
 
