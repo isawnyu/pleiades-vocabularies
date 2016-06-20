@@ -36,6 +36,7 @@ def installVocabularies(context):
         'name-completeness',
         'ancient-name-languages',
         'name-types',
+        'time-periods',
         ]
 
     registry = getUtility(IRegistry)
@@ -69,26 +70,26 @@ def installVocabularies(context):
                 atvm.manage_delObjects([vid])
             atvm.invokeFactory('AliasVocabulary', vid, target=vocabs[vid])
 
-    if not settings.time_periods:
-        vdex = VDEXManager(data)
-        settings.time_periods = []
-        for key in vdex.getVocabularyDict().keys():
-            value = vdex.getTermCaptionById(key)
-            descr = vdex.getTermDescriptionById(key).capitalize()
-            min = None
-            max = None
-            m = re.search(
-                r"\[\[(-{0,1}\d*\.{0,1}\d*)\s*,\s*(-{0,1}\d*\.{0,1}\d*)\]\]",
-                descr)
-            if m is not None:
-                min = int(m.group(1))
-                max = int(m.group(2))
-            settings.time_periods.append(dict(id=key,
-                                              title=value,
-                                              description=descr,
-                                              lower_bound=min,
-                                              upper_bound=max,
-                                              hidden=False))
+        if vocabname == 'time-periods' and not settings.time_periods:
+            vdex = VDEXManager(data)
+            settings.time_periods = []
+            for key in vdex.getVocabularyDict().keys():
+                value = vdex.getTermCaptionById(key)
+                descr = vdex.getTermDescriptionById(key).capitalize()
+                min = None
+                max = None
+                m = re.search(
+                    r"\[\[(-{0,1}\d*\.{0,1}\d*)\s*,\s*(-{0,1}\d*\.{0,1}\d*)\]\]",
+                    descr)
+                if m is not None:
+                    min = int(m.group(1))
+                    max = int(m.group(2))
+                settings.time_periods.append(dict(id=key,
+                                                  title=value,
+                                                  description=descr,
+                                                  lower_bound=min,
+                                                  upper_bound=max,
+                                                  hidden=False))
 
     # prepopulate arch_remains vocab - if uninitialized
     if not settings.arch_remains:
