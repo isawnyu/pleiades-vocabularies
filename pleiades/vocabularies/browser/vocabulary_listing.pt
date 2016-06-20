@@ -141,50 +141,11 @@
                         </a>
                     </span>
 
-                    <span class="documentByLine">
-                        <tal:byline condition="show_about">
-                            &mdash;
-
-                            <tal:name tal:condition="item_creator"
-                                tal:define="author python:credits.user_in_byline(item_creator);
-                                            creator_id author/id;">
-                              <span i18n:translate="label_by_author">
-                                by
-                              <a href="#"
-                                 tal:attributes="href string:${navigation_root_url}/author/${creator_id}"
-                                 tal:content="author/fullname"
-                                 tal:omit-tag="not:creator_id"
-                                 i18n:name="author">
-                                Bob Dobalina
-                              </a>
-                              </span>
-
-                            </tal:name>
-
-                            <tal:modified>
-                                &mdash;
-                                <tal:mod i18n:translate="box_last_modified">
-                                  last modified
-                                </tal:mod>
-                                <span tal:replace="python:toLocalizedTime(item_modified,long_format=1)">
-                                  August 16, 2001 at 23:35:59
-                                </span>
-                            </tal:modified>
-
-                            <metal:description define-slot="description_slot">
-                                <tal:comment replace="nothing">
-                                    Place custom listing info for custom types here
-                                </tal:comment>
-                            </metal:description>
-                        </tal:byline>
-                    </span>
-
                 </dt>
 
                 <dd tal:condition="item_description">
-                    <span class="description"
-                           tal:content="item_description">
-                        description
+                    <span class="description">
+                        Named time periods associated with a range of years.
                     </span>
                 </dd>
                 </tal:time-periods>
