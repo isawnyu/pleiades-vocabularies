@@ -3,8 +3,10 @@ import os
 import re
 
 from zope.component import getUtility
+from zope.interface import alsoProvides
 from plone.registry.interfaces import IRegistry
 from pleiades.vocabularies.interfaces import IPleiadesSettings
+from pleiades.vocabularies.content.interfaces import IPleiadesVocabularyFolder
 from imsvdex.vdex import VDEXManager
 
 from Products.CMFCore.utils import getToolByName
@@ -110,3 +112,15 @@ def install_datagrid_field(context):
     qi = getToolByName(context, 'portal_quickinstaller')
     if not qi.isProductInstalled('collective.z3cform.datagridfield'):
         qi.installProduct('collective.z3cform.datagridfield')
+
+
+def remove_old_time_periods(context):
+    ut = getToolByName(context, 'portal_url')
+    site = ut.getPortalObject()
+    vocabs = site['vocabularies']
+    if 'time-periods' in vocabs.objectIds():
+        vocabs.manage_delObjects(['time-periods'])
+        # apply marker interface so that new views can only be used here
+        alsoProvides(vocabs, IPleiadesVocabularyFolder)
+        # change default view to point to our custom folder listing
+        vocabs.setLayout('pleiades-vocabulary-listing')
