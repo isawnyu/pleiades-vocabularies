@@ -1,0 +1,57 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+  <head>
+    <title tal:content="template/title">Ancient Names</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
+    <tal:links metal:fill-slot="head_slot">
+    </tal:links>
+
+    <tal:js metal:fill-slot="javascript_head_slot">
+    </tal:js>
+
+  </head>
+  <body>
+  <div metal:fill-slot="main">
+
+    <p tal:condition="view/term">
+    <a href="time-periods">Back to time periods vocabulary</a>
+    </p>
+
+    <h1 class="documentFirstHeading" tal:content="view/term/title|string:Time Periods Vocabulary"></h1>
+
+    <p tal:content="view/term/description|string:"></p>
+
+    <div tal:condition="view/term">
+      <p>
+        <strong>Upper bound:</strong>
+        <span tal:content="python:view.to_ad(view.term['lower_bound'])"></span>
+        <br />
+        <strong>Lower bound:</strong>
+        <span tal:content="python:view.to_ad(view.term['upper_bound'])"></span>
+      </p>
+    </div>
+
+    <div tal:condition="not:view/term">
+      <div tal:repeat="term view/periods">
+        <p>
+        <a tal:attributes="href string:time-periods/${term/id}"
+             tal:define="lower_bound python:view.to_ad(term['lower_bound']);
+                         upper_bound python:view.to_ad(term['upper_bound']);"
+             tal:content="string:${term/title} (${lower_bound} - ${upper_bound})"></a>
+          <br />
+          <span tal:content="term/description"></span>
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  </body>
+</html>

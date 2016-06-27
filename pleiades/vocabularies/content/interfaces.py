@@ -5,4 +5,6 @@ class IPleiadesVocabulary(Interface):
 
 class IPleiadesVocabularyTerm(Interface):
     pass
- 
+
+class IPleiadesVocabularyFolder(Interface):
+    pass

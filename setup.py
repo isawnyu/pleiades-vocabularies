@@ -26,6 +26,7 @@ setup(name='pleiades.vocabularies',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'collective.z3cform.datagridfield',
           # -*- Extra requirements: -*-
       ],
       entry_points="""

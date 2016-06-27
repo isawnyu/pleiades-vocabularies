@@ -6,6 +6,7 @@
   >
 
   <five:registerPackage package="." initialize=".initialize" />
+  <includeDependencies package="." />
     
   <genericsetup:registerProfile
     name="default"
@@ -25,7 +26,62 @@
     title="Pleiades: Add Vocabulary Term"
     />
 
+  <include package=".browser"/>
   <include package=".content"/>
   <include file="skins.zcml"/>
   
+  <genericsetup:upgradeDepends
+      source="*"
+      destination="1"
+      profile="pleiades.vocabularies:default"
+      title="Install registry vocabulary"
+      import_steps="plone.app.registry controlpanel"
+      />
+
+  <genericsetup:upgradeDepends
+      source="*"
+      destination="2"
+      profile="pleiades.vocabularies:default"
+      title="Install archeological remains registry vocabulary"
+      import_steps="plone.app.registry controlpanel"
+      />
+
+  <genericsetup:upgradeDepends
+      source="*"
+      destination="3"
+      profile="pleiades.vocabularies:default"
+      title="Install archeological remains registry vocabulary default data"
+      import_steps="pleiades.vocabularies-various"
+      />
+
+  <genericsetup:upgradeStep
+    profile="pleiades.vocabularies:default"
+    source="0001"
+    destination="0002"
+    title="Install collective.z3cform.datagridfield"
+    description=""
+    handler=".setuphandlers.install_datagrid_field"
+    />
+
+  <genericsetup:upgradeStep
+    profile="pleiades.vocabularies:default"
+    source="0002"
+    destination="0003"
+    title="Replace old time periods with new registry vocabulary"
+    description=""
+    handler=".setuphandlers.remove_old_time_periods"
+    />
+
+  <utility
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      component="pleiades.vocabularies.vocabularies.time_periods_vocabulary"
+      name="pleiades.vocabularies.time_periods"
+      />
+
+  <utility
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      component="pleiades.vocabularies.vocabularies.arch_remains_vocabulary"
+      name="pleiades.vocabularies.arch_remains"
+      />
+
 </configure>
