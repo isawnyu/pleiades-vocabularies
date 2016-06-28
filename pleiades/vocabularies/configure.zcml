@@ -54,14 +54,6 @@
       import_steps="pleiades.vocabularies-various"
       />
 
-  <genericsetup:upgradeDepends
-      source="*"
-      destination="4"
-      profile="pleiades.vocabularies:default"
-      title="Install relationship types registry vocabulary"
-      import_steps="plone.app.registry controlpanel"
-      />
-
   <genericsetup:upgradeStep
     profile="pleiades.vocabularies:default"
     source="0001"
@@ -79,6 +71,22 @@
     description=""
     handler=".setuphandlers.remove_old_time_periods"
     />
+
+  <upgradeSteps
+      profile="pleiades.vocabularies:default"
+      source="0003"
+      destination="0004">
+    <upgradeDepends
+      title="Install relationship types registry vocabulary"
+      description=""
+      import_steps="plone.app.registry controlpanel"
+    />
+    <upgradeDepends
+      title="Install relationship types vocabulary default data"
+      description=""
+      import_steps="pleiades.vocabularies-various"
+    />
+  </upgradeSteps>
 
   <utility
       provides="zope.schema.interfaces.IVocabularyFactory"
