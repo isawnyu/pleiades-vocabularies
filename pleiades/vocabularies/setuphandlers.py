@@ -100,7 +100,6 @@ def installVocabularies(context):
 
     # prepopulate arch_remains vocab - if uninitialized
     if not settings.arch_remains:
-        settings.arch_remains = []
         vocab_data = [
             {'id': 'unknown', 'title': 'Unknown'},
             {'id': 'none', 'title': 'None'},
@@ -109,13 +108,10 @@ def installVocabularies(context):
             {'id': 'restored', 'title': 'Restored'},
             {'id': 'notvisible', 'title': 'Not visible'},
         ]
-        for vocab_entry in vocab_data:
-            settings.arch_remains.append(dict(id=vocab_entry['id'],
-                                              title=vocab_entry['title']))
+        settings.arch_remains = vocab_data
 
     # prepopulate relationship_types vocab - if uninitialized
     if not settings.relationship_types:
-        settings.relationship_types = []
         vocab_data = [
             {'id': 'connection', 'title': 'connection', 
              'same_as' : '', 'hidden' : False},
@@ -132,11 +128,7 @@ def installVocabularies(context):
             {'id': 'intersects', 'title': 'intersects', 
              'same_as' : '', 'hidden' : False},
         ]
-        for vocab_entry in vocab_data:
-            settings.relationship_types.append(dict(id=vocab_entry['id'],
-                                              title=vocab_entry['title'],
-                                              same_as=vocab_entry['same_as'],
-                                              hidden=vocab_entry['hidden']))
+        settings.relationship_types = vocab_data
 
     return None
 
