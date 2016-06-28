@@ -54,6 +54,14 @@
       import_steps="pleiades.vocabularies-various"
       />
 
+  <genericsetup:upgradeDepends
+      source="*"
+      destination="4"
+      profile="pleiades.vocabularies:default"
+      title="Install relationship types registry vocabulary"
+      import_steps="plone.app.registry controlpanel"
+      />
+
   <genericsetup:upgradeStep
     profile="pleiades.vocabularies:default"
     source="0001"
@@ -82,6 +90,12 @@
       provides="zope.schema.interfaces.IVocabularyFactory"
       component="pleiades.vocabularies.vocabularies.arch_remains_vocabulary"
       name="pleiades.vocabularies.arch_remains"
+      />
+
+  <utility
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      component="pleiades.vocabularies.vocabularies.relationship_types_vocabulary"
+      name="pleiades.vocabularies.relationship_types"
       />
 
 </configure>

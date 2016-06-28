@@ -17,6 +17,12 @@ class IVocabTerm(Interface):
     id = schema.TextLine(title=u'Id')
     title = schema.TextLine(title=u'Title')
 
+class IVocabTermExtended(Interface):
+    id = schema.TextLine(title=u'Id')
+    title = schema.TextLine(title=u'Title')
+    same_as = schema.URI(title=u'Same As', required=False)
+    hidden = schema.Bool(title=u'Hidden', default=False)
+
 class IPleiadesSettings(Interface):
     """Global Pleiades site specific settings"""
     time_periods = schema.List(
@@ -29,4 +35,10 @@ class IPleiadesSettings(Interface):
         title=u'Archaeological Remains',
         value_type=DictRow(title=u'Remains Entry',
                            schema=IVocabTerm)
+        )
+
+    relationship_types = schema.List(
+        title=u'Relationship Types',
+        value_type=DictRow(title=u'Relationship Entry',
+                           schema=IVocabTermExtended)
         )
