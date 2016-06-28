@@ -134,7 +134,9 @@ def installVocabularies(context):
         ]
         for vocab_entry in vocab_data:
             settings.relationship_types.append(dict(id=vocab_entry['id'],
-                                              title=vocab_entry['title']))
+                                              title=vocab_entry['title'],
+                                              same_as=vocab_entry['same_as'],
+                                              hidden=vocab_entry['hidden']))
 
     return None
 
