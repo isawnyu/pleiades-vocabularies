@@ -34,6 +34,9 @@ time_periods_vocabulary = registry_vocabulary(time_periods)
 arch_remains = IPleiadesSettings['arch_remains']
 arch_remains_vocabulary = registry_vocabulary(arch_remains)
 
+relationship_types = IPleiadesSettings['relationship_types']
+relationship_types_vocabulary = registry_vocabulary(relationship_types)
+
 
 def get_vocabulary(name):
     registry = getUtility(IRegistry)

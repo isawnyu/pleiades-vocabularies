@@ -100,7 +100,6 @@ def installVocabularies(context):
 
     # prepopulate arch_remains vocab - if uninitialized
     if not settings.arch_remains:
-        settings.arch_remains = []
         vocab_data = [
             {'id': 'unknown', 'title': 'Unknown'},
             {'id': 'none', 'title': 'None'},
@@ -109,9 +108,27 @@ def installVocabularies(context):
             {'id': 'restored', 'title': 'Restored'},
             {'id': 'notvisible', 'title': 'Not visible'},
         ]
-        for vocab_entry in vocab_data:
-            settings.arch_remains.append(dict(id=vocab_entry['id'],
-                                              title=vocab_entry['title']))
+        settings.arch_remains = vocab_data
+
+    # prepopulate relationship_types vocab - if uninitialized
+    if not settings.relationship_types:
+        vocab_data = [
+            {'id': 'connection', 'title': 'connection', 
+             'same_as' : '', 'hidden' : False},
+            {'id': 'at', 'title': 'at', 
+             'same_as' : '', 'hidden' : False},
+            {'id': 'on', 'title': 'on', 
+             'same_as' : '', 'hidden' : False},
+            {'id': 'part_of_admin', 'title': 'part of (administrative)', 
+             'same_as' : '', 'hidden' : False},
+            {'id': 'part_of_regional', 'title': 'part of (regional)', 
+             'same_as' : '', 'hidden' : False},
+            {'id': 'near', 'title': 'near', 
+             'same_as' : '', 'hidden' : False},
+            {'id': 'intersects', 'title': 'intersects', 
+             'same_as' : '', 'hidden' : False},
+        ]
+        settings.relationship_types = vocab_data
 
     return None
 

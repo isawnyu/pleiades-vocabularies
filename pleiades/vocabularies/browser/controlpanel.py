@@ -17,6 +17,8 @@ class PleiadesSettingsEditForm(controlpanel.RegistryEditForm):
         self.fields['time_periods'].allow_insert = True
         self.fields['arch_remains'].widgetFactory = DataGridFieldFactory
         self.fields['arch_remains'].allow_insert = True
+        self.fields['relationship_types'].widgetFactory = DataGridFieldFactory
+        self.fields['relationship_types'].allow_insert = True
 
     def datagridUpdateWidgets(self, subform, widgets, widget):
         if 'id' in widgets.keys():
