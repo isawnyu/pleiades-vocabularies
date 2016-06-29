@@ -166,5 +166,34 @@ def remove_old_time_periods(context):
         vocabs.setLayout('pleiades-vocabulary-listing')
 
 
+def migrate_vocabulary(context, atvm_name, registry_name):
+    site = getToolByName(context, 'portal_url').getPortalObject()
+    vocabularies = site['vocabularies']
+
+    if atvm_name not in vocabularies:
+        return
+    to_migrate = vocabularies[atvm_name]
+
+    wf_tool = getToolByName(site, "portal_workflow")
+    registry = getUtility(IRegistry)
+    settings = registry.forInterface(IPleiadesSettings, False)
+
+    new_terms = []
+    for term in to_migrate.objectValues():
+        state = wf_tool.getInfoFor(term, 'review_state', '')
+        hidden = state != 'published'
+        new_terms.append(dict(
+            id=term.getId().decode('utf-8'),
+            title=term.Title().decode('utf-8'),
+            description=term.Description().decode('utf-8'),
+            same_as=None,
+            hidden=hidden,
+        ))
+    setattr(settings, registry_name, new_terms)
+
+    # remove old vocab
+    vocabularies.manage_delObjects([atvm_name])
+
+
 def migrate_place_types(context):
-    pass
+    migrate_vocabulary(context, 'place-types', 'place_types')

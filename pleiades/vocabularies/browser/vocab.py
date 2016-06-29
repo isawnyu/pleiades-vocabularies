@@ -13,7 +13,7 @@ from pleiades.vocabularies.vocabularies import get_vocabulary
 
 VOCAB_TITLES = {
     'time-periods': 'Time Periods',
-    'place-types': 'Place Types',
+    'place-types': 'Feature (or Place) Categories',
 }
 
 
