@@ -16,18 +16,16 @@
       permission="plone.app.controlpanel.Overview"
       />
 
-  <browser:page
-      name="time-periods"
-      for="pleiades.vocabularies.content.interfaces.IPleiadesVocabularyFolder"
-      class=".time_periods.TimePeriodsView"
-      allowed_attributes="periods"
-      permission="zope2.View"
-      />
+  <adapter
+     factory=".vocab.PleiadesVocabularyPublishTraverse"
+     provides="zope.publisher.interfaces.IPublishTraverse"
+     for="..content.interfaces.IPleiadesVocabularyFolder zope.publisher.interfaces.IRequest"
+     />
 
   <browser:page
       name="pleiades-vocabulary-listing"
-      for="pleiades.vocabularies.content.interfaces.IPleiadesVocabularyFolder"
-      class=".time_periods.PleiadesVocabularyFolderView"
+      for="..content.interfaces.IPleiadesVocabularyFolder"
+      template="vocabulary_listing.pt"
       permission="zope2.View"
       />
 

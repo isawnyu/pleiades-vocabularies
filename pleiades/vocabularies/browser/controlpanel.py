@@ -13,12 +13,11 @@ class PleiadesSettingsEditForm(controlpanel.RegistryEditForm):
 
     def updateFields(self):
         super(PleiadesSettingsEditForm, self).updateFields()
-        self.fields['time_periods'].widgetFactory = DataGridFieldFactory
-        self.fields['time_periods'].allow_insert = True
-        self.fields['arch_remains'].widgetFactory = DataGridFieldFactory
-        self.fields['arch_remains'].allow_insert = True
-        self.fields['relationship_types'].widgetFactory = DataGridFieldFactory
-        self.fields['relationship_types'].allow_insert = True
+        for field in (
+                'time_periods', 'place_types', 'arch_remains',
+                'relationship_types'):
+            self.fields[field].widgetFactory = DataGridFieldFactory
+            self.fields[field].allow_insert = True
 
     def datagridUpdateWidgets(self, subform, widgets, widget):
         if 'id' in widgets.keys():

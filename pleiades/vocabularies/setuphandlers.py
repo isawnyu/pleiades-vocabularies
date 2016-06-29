@@ -28,22 +28,26 @@ def installVocabularies(context):
     site = context.getSite()
     atvm = getToolByName(site, 'portal_vocabularies')
     wftool = getToolByName(site, 'portal_workflow')
-    vocabs = site['vocabularies']
-    vocab_names = [
+    vocab_folder = site['vocabularies']
+    atvm_vocabs = [
         'name-accuracy',
         'association-certainty',
-        'place-types',
         'attestation-confidence',
         'name-completeness',
         'ancient-name-languages',
         'name-types',
-        'time-periods',
         ]
+    registry_vocabs = [
+        'time-periods',
+        'place-types',
+    ]
 
     registry = getUtility(IRegistry)
     settings = registry.forInterface(IPleiadesSettings, False)
 
-    for vocabname in vocab_names:
+    for vocabname in (atvm_vocabs + registry_vocabs):
+
+        # Read from .vdex file
         vdexpath = os.path.join(
             os.path.dirname(__file__), 'data', '%s.vdex' % vocabname
             )
@@ -55,90 +59,91 @@ def installVocabularies(context):
             logger.warn("Problems while reading VDEX import file " +
                         "provided at %s." % vdexpath)
             continue
-        if vocabname != 'time-periods' and vocabname not in vocabs.contentIds():
-            vid = vocabs.invokeFactory('PleiadesVocabulary', vocabname)
+
+        if vocabname in atvm_vocabs and vocabname not in vocab_folder.contentIds():
+            vid = vocab_folder.invokeFactory('PleiadesVocabulary', vocabname)
             try:
-                wftool.doActionFor(vocabs[vid], action='publish')
+                wftool.doActionFor(vocab_folder[vid], action='publish')
             except WorkflowException:
                 pass
             vdex = VDEXManager(data)
             for key in vdex.getVocabularyDict().keys():
                 value = vdex.getTermCaptionById(key)
                 descr = vdex.getTermDescriptionById(key).capitalize()
-                tid = vocabs[vid].invokeFactory('PleiadesVocabularyTerm',
-                                                key,
-                                                title=value,
-                                                description=descr)
+                tid = vocab_folder[vid].invokeFactory(
+                    'PleiadesVocabularyTerm', key,
+                    title=value, description=descr)
                 try:
-                    wftool.doActionFor(vocabs[vid][tid], action='publish')
+                    wftool.doActionFor(vocab_folder[vid][tid], action='publish')
                 except WorkflowException:
                     pass
             if vid in atvm.contentIds():
                 atvm.manage_delObjects([vid])
-            atvm.invokeFactory('AliasVocabulary', vid, target=vocabs[vid])
+            atvm.invokeFactory('AliasVocabulary', vid, target=vocab_folder[vid])
 
-        if vocabname == 'time-periods' and not settings.time_periods:
+        elif vocabname in registry_vocabs:
+            vocabkey = vocabname.replace('-', '_')
+
+            # Avoid overwriting existing terms
+            value = getattr(settings, vocabkey, None)
+            if value is not None:
+                continue
+
             vdex = VDEXManager(data)
-            settings.time_periods = []
+            terms = []
             for key in vdex.getVocabularyDict().keys():
-                value = vdex.getTermCaptionById(key)
+                title = vdex.getTermCaptionById(key)
                 descr = vdex.getTermDescriptionById(key).capitalize()
-                min = None
-                max = None
-                m = re.search(
-                    r"\[\[(-{0,1}\d*\.{0,1}\d*)\s*,\s*(-{0,1}\d*\.{0,1}\d*)\]\]",
-                    descr)
-                if m is not None:
-                    min = int(m.group(1))
-                    max = int(m.group(2))
-                settings.time_periods.append(dict(id=key,
-                                                  title=value,
-                                                  description=descr,
-                                                  lower_bound=min,
-                                                  upper_bound=max,
-                                                  hidden=False))
+                term = dict(
+                    id=key.decode('utf8'),
+                    title=title.decode('utf8'),
+                    description=descr.decode('utf8'),
+                    hidden=False,
+                    same_as=None,
+                )
+                if vocabname == 'time-periods':
+                    min = None
+                    max = None
+                    m = re.search(
+                        r"\[\[(-{0,1}\d*\.{0,1}\d*)\s*,\s*(-{0,1}\d*\.{0,1}\d*)\]\]",
+                        descr)
+                    if m is not None:
+                        min = int(m.group(1))
+                        max = int(m.group(2))
+                    term['lower_bound'] = min
+                    term['upper_bound'] = max
+                terms.append(term)
+            setattr(settings, vocabkey, terms)
 
     # prepopulate arch_remains vocab - if uninitialized
     if not settings.arch_remains:
-        settings.arch_remains = []
-        vocab_data = [
-            {'id': 'unknown', 'title': 'Unknown'},
-            {'id': 'none', 'title': 'None'},
-            {'id': 'traces', 'title': 'Traces'},
-            {'id': 'substantive', 'title': 'Substantive'},
-            {'id': 'restored', 'title': 'Restored'},
-            {'id': 'notvisible', 'title': 'Not visible'},
+        settings.arch_remains = [
+            {'id': u'unknown', 'title': u'Unknown'},
+            {'id': u'none', 'title': u'None'},
+            {'id': u'traces', 'title': u'Traces'},
+            {'id': u'substantive', 'title': u'Substantive'},
+            {'id': u'restored', 'title': u'Restored'},
+            {'id': u'notvisible', 'title': u'Not visible'},
         ]
-        for vocab_entry in vocab_data:
-            settings.arch_remains.append(dict(id=vocab_entry['id'],
-                                              title=vocab_entry['title']))
 
     # prepopulate relationship_types vocab - if uninitialized
     if not settings.relationship_types:
-        settings.relationship_types = []
-        vocab_data = [
-            {'id': 'connection', 'title': 'connection', 
-             'same_as' : '', 'hidden' : False},
-            {'id': 'at', 'title': 'at', 
-             'same_as' : '', 'hidden' : False},
-            {'id': 'on', 'title': 'on', 
-             'same_as' : '', 'hidden' : False},
-            {'id': 'part_of_admin', 'title': 'part of (administrative)', 
-             'same_as' : '', 'hidden' : False},
-            {'id': 'part_of_regional', 'title': 'part of (regional)', 
-             'same_as' : '', 'hidden' : False},
-            {'id': 'near', 'title': 'near', 
-             'same_as' : '', 'hidden' : False},
-            {'id': 'intersects', 'title': 'intersects', 
-             'same_as' : '', 'hidden' : False},
+        settings.relationship_types = [
+            {'id': u'connection', 'title': u'connection', 'description': u'',
+             'same_as': None, 'hidden': False},
+            {'id': u'at', 'title': u'at', 'description': u'',
+             'same_as': None, 'hidden': False},
+            {'id': u'on', 'title': u'on', 'description': u'',
+             'same_as': None, 'hidden': False},
+            {'id': u'part_of_admin', 'title': u'part of (administrative)',
+             'description': u'', 'same_as': None, 'hidden': False},
+            {'id': u'part_of_regional', 'title': u'part of (regional)',
+             'description': u'', 'same_as': None, 'hidden': False},
+            {'id': u'near', 'title': u'near', 'description': u'',
+             'same_as': None, 'hidden': False},
+            {'id': u'intersects', 'title': u'intersects', 'description': u'',
+             'same_as': None, 'hidden': False},
         ]
-        for vocab_entry in vocab_data:
-            settings.relationship_types.append(dict(id=vocab_entry['id'],
-                                              title=vocab_entry['title'],
-                                              same_as=vocab_entry['same_as'],
-                                              hidden=vocab_entry['hidden']))
-
-    return None
 
 
 def install_datagrid_field(context):
@@ -157,3 +162,36 @@ def remove_old_time_periods(context):
         alsoProvides(vocabs, IPleiadesVocabularyFolder)
         # change default view to point to our custom folder listing
         vocabs.setLayout('pleiades-vocabulary-listing')
+
+
+def migrate_vocabulary(context, atvm_name, registry_name):
+    site = getToolByName(context, 'portal_url').getPortalObject()
+    vocabularies = site['vocabularies']
+
+    if atvm_name not in vocabularies:
+        return
+    to_migrate = vocabularies[atvm_name]
+
+    wf_tool = getToolByName(site, "portal_workflow")
+    registry = getUtility(IRegistry)
+    settings = registry.forInterface(IPleiadesSettings, False)
+
+    new_terms = []
+    for term in to_migrate.objectValues():
+        state = wf_tool.getInfoFor(term, 'review_state', '')
+        hidden = state != 'published'
+        new_terms.append(dict(
+            id=term.getId().decode('utf-8'),
+            title=term.Title().decode('utf-8'),
+            description=term.Description().decode('utf-8'),
+            same_as=None,
+            hidden=hidden,
+        ))
+    setattr(settings, registry_name, new_terms)
+
+    # remove old vocab
+    vocabularies.manage_delObjects([atvm_name])
+
+
+def migrate_place_types(context):
+    migrate_vocabulary(context, 'place-types', 'place_types')

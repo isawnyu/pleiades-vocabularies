@@ -13,9 +13,7 @@ class TestSetup(PleiadesVocabularyFunctionalTestCase):
     def test_vocabs(self):
         self.failUnless('name-accuracy' in self.vocabs.keys())
         self.failUnless('association-certainty' in self.vocabs.keys())
-        self.failUnless('place-types' in self.vocabs.keys())
         self.failUnless('attestation-confidence' in self.vocabs.keys())
-        self.failUnless('time-periods' in self.vocabs.keys())
         self.failUnless('name-completeness' in self.vocabs.keys())
         self.failUnless('ancient-name-languages' in self.vocabs.keys())
         self.failUnless('name-types' in self.vocabs.keys())
@@ -23,9 +21,7 @@ class TestSetup(PleiadesVocabularyFunctionalTestCase):
     def test_uvocabs(self):
         self.failUnless('name-accuracy' in self.uvocabs.keys())
         self.failUnless('association-certainty' in self.uvocabs.keys())
-        self.failUnless('place-types' in self.uvocabs.keys())
         self.failUnless('attestation-confidence' in self.uvocabs.keys())
-        self.failUnless('time-periods' in self.uvocabs.keys())
         self.failUnless('name-completeness' in self.uvocabs.keys())
         self.failUnless('ancient-name-languages' in self.uvocabs.keys())
         self.failUnless('name-types' in self.uvocabs.keys())
