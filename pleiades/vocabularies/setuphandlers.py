@@ -32,12 +32,10 @@ def installVocabularies(context):
     atvm_vocabs = [
         'name-accuracy',
         'association-certainty',
-        'place-types',
         'attestation-confidence',
         'name-completeness',
         'ancient-name-languages',
         'name-types',
-        'time-periods',
         ]
     registry_vocabs = [
         'time-periods',
