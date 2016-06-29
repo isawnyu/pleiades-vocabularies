@@ -5,28 +5,43 @@ from zope.interface import implementer
 
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from ZPublisher.BaseRequest import DefaultPublishTraverse
 
 from pleiades.rdf.common import RegVocabGrapher
 from pleiades.vocabularies.vocabularies import get_vocabulary
 
 
-@implementer(IPublishTraverse)
-class TimePeriodsView(BrowserView):
+VOCAB_TITLES = {
+    'time-periods': 'Time Periods',
+    'place-types': 'Place Types',
+}
 
-    index = ViewPageTemplateFile('time_periods.pt')
+
+@implementer(IPublishTraverse)
+class VocabView(BrowserView):
+
+    index = ViewPageTemplateFile('vocab.pt')
     term = None
 
+    def __init__(self, context, request, vocabname):
+        self.context = context
+        self.request = request
+        self.vocabname = vocabname
+
     @property
-    def periods(self):
-        periods = get_vocabulary('time_periods')
-        return periods
+    def vocabkey(self):
+        return self.vocabname.replace('-', '_')
+
+    @property
+    def terms(self):
+        return get_vocabulary(self.vocabkey)
 
     def publishTraverse(self, request, name):
         self.term_id = name
-        if name in ['rdf', 'turtle']:
+        if name in ['rdf', 'turtle', 'json']:
             term = [name]
         else:
-            term = [p for p in self.periods if p['id'] == name]
+            term = [p for p in self.terms if p['id'] == name]
         if term:
             self.term = term[0]
         return self
@@ -61,11 +76,17 @@ class TimePeriodsView(BrowserView):
 
         return self.index()
 
+    def title(self):
+        if self.term:
+            return self.term['title']
+        else:
+            return VOCAB_TITLES.get(self.vocabname, self.vocabname)
+
     def __json__(self):
         if self.term:
             return json.dumps(self.term)
         else:
-            return json.dumps(self.periods)
+            return json.dumps(self.terms)
 
     def to_ad(self, year):
         sign = (year > 0) * 2 - 1
@@ -79,8 +100,8 @@ class TimePeriodsView(BrowserView):
         self.request.response.setHeader(
             'Content-Type', "text/turtle; charset=utf-8")
         self.request.response.setHeader(
-            'Content-Disposition', "filename=time-periods.ttl")
-        g = RegVocabGrapher(self.context, self.request).scheme('time_periods')
+            'Content-Disposition', "filename={}.ttl".format(self.vocabname))
+        g = RegVocabGrapher(self.context, self.request).scheme(self.vocabkey)
         return g.serialize(format='turtle')
 
     def rdf_view(self):
@@ -88,14 +109,16 @@ class TimePeriodsView(BrowserView):
         self.request.response.setHeader(
             'Content-Type', "application/rdf+xml")
         self.request.response.setHeader(
-            'Content-Disposition', "filename=time-periods.rdf")
-        g = RegVocabGrapher(self.context, self.request).scheme('time_periods')
+            'Content-Disposition', "filename={}.rdf".format(self.vocabname))
+        g = RegVocabGrapher(self.context, self.request).scheme(self.vocabkey)
         return g.serialize(format='pretty-xml')
 
 
-class PleiadesVocabularyFolderView(BrowserView):
+@implementer(IPublishTraverse)
+class PleiadesVocabularyPublishTraverse(DefaultPublishTraverse):
 
-    index = ViewPageTemplateFile('vocabulary_listing.pt')
-
-    def __call__(self):
-        return self.index()
+    def publishTraverse(self, request, name):
+        if name in ('time-periods', 'place-types'):
+            return VocabView(self.context, request, name)
+        return super(PleiadesVocabularyPublishTraverse, self).publishTraverse(
+            request, name)

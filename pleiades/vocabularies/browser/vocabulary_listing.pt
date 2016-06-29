@@ -128,27 +128,20 @@
                     </span>
                 </dd>
 
-                <tal:time-periods condition="repeat/item/end">
-                <dt>
+                <tal:registry-vocabs condition="repeat/item/end">
+                <dt><span class="summary">
+                    <img tal:replace="structure item_icon/html_tag" />
+                    <a href="time-periods">Time Periods</a>
+                </span></dt>
+                <dd><span class="description">Named time periods associated with a range of years.</span></dd>
 
-                    <span class="summary">
-                        <img tal:replace="structure item_icon/html_tag" />
-                        <a href="#"
-                           tal:attributes="href string:time-periods";
-                                           class string:$item_type_class $item_wf_state_class url"
-                           tal:content="string:Time Periods">
-                            Item Title
-                        </a>
-                    </span>
+                <dt><span class="summary">
+                    <img tal:replace="structure item_icon/html_tag" />
+                    <a href="place-types">Feature (or Place) Categories</a>
+                </span></dt>
+                <dd><span class="description">Once we called these "types", but as they are not hierarchical and not exclusive we have changed them to "categories."</span></dd>
 
-                </dt>
-
-                <dd tal:condition="item_description">
-                    <span class="description">
-                        Named time periods associated with a range of years.
-                    </span>
-                </dd>
-                </tal:time-periods>
+                </tal:registry-vocabs>
 
             </metal:block>
             </tal:block>

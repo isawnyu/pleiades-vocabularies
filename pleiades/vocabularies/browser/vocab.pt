@@ -1,0 +1,66 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+  <head>
+    <title tal:content="template/title">Ancient Names</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
+    <tal:links metal:fill-slot="head_slot">
+    </tal:links>
+
+    <tal:js metal:fill-slot="javascript_head_slot">
+    </tal:js>
+
+  </head>
+  <body>
+  <div metal:fill-slot="main">
+
+    <a tal:attributes="href python:view.vocabname if view.term else '.'">
+      Back to <span tal:replace="python:'vocabulary' if view.term else 'vocabularies'" />
+    </a>
+
+    <h1 class="documentFirstHeading" tal:content="view/title"></h1>
+
+    <p tal:content="view/term/description|string:"></p>
+
+    <div tal:condition="view/term">
+      <p>
+        <strong>Id:</strong>
+        <span tal:content="view/term/id" />
+      </p>
+      <p tal:condition="view/term/lower_bound|nothing">
+        <strong>Lower bound:</strong>
+        <span tal:content="python:view.to_ad(view.term['lower_bound'])"></span>
+      </p>
+      <p tal:condition="view/term/upper_bound|nothing">
+        <strong>Upper bound:</strong>
+        <span tal:content="python:view.to_ad(view.term['upper_bound'])"></span>
+      </p>
+      <p tal:condition="view/term/same_as|nothing">
+        <strong>Same as:</strong>
+        <a tal:attributes="href view/term/same_as"
+           tal:content="view/term/same_as" />
+      </p>
+    </div>
+
+    <div tal:condition="not:view/term">
+      <div tal:repeat="term view/terms">
+        <p>
+        <a tal:attributes="href string:${view/vocabname}/${term/id}"><span tal:replace="term/title" /><tal:b condition="python:view.vocabname == 'time-periods'">
+            (<span tal:replace="python:view.to_ad(term['lower_bound'])" /> -
+             <span tal:replace="python:view.to_ad(term['upper_bound'])") />)</tal:b></a>
+          <br />
+          <span tal:content="term/description"></span>
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  </body>
+</html>
