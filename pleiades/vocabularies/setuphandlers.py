@@ -113,6 +113,31 @@ def installVocabularies(context):
             settings.arch_remains.append(dict(id=vocab_entry['id'],
                                               title=vocab_entry['title']))
 
+    # prepopulate relationship_types vocab - if uninitialized
+    if not settings.relationship_types:
+        settings.relationship_types = []
+        vocab_data = [
+            {'id': 'connection', 'title': 'connection', 
+             'same_as' : '', 'hidden' : False},
+            {'id': 'at', 'title': 'at', 
+             'same_as' : '', 'hidden' : False},
+            {'id': 'on', 'title': 'on', 
+             'same_as' : '', 'hidden' : False},
+            {'id': 'part_of_admin', 'title': 'part of (administrative)', 
+             'same_as' : '', 'hidden' : False},
+            {'id': 'part_of_regional', 'title': 'part of (regional)', 
+             'same_as' : '', 'hidden' : False},
+            {'id': 'near', 'title': 'near', 
+             'same_as' : '', 'hidden' : False},
+            {'id': 'intersects', 'title': 'intersects', 
+             'same_as' : '', 'hidden' : False},
+        ]
+        for vocab_entry in vocab_data:
+            settings.relationship_types.append(dict(id=vocab_entry['id'],
+                                              title=vocab_entry['title'],
+                                              same_as=vocab_entry['same_as'],
+                                              hidden=vocab_entry['hidden']))
+
     return None
 
 
