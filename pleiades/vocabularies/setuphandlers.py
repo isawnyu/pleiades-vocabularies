@@ -190,7 +190,7 @@ def migrate_vocabulary(context, atvm_name, registry_name):
     setattr(settings, registry_name, new_terms)
 
     # remove old vocab
-    vocabularies.manage_delObjects([atvm_name])
+    # vocabularies.manage_delObjects([atvm_name])
 
 
 def migrate_place_types(context):
