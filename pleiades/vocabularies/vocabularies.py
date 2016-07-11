@@ -49,5 +49,7 @@ def get_vocabulary(name):
         return []
     if name == 'time_periods':
         return sorted(vocabulary, key=lambda k: k['lower_bound'])
+    elif name == 'place_types':
+        return sorted(vocabulary, key=lambda k: k['title'])
     else:
         return vocabulary
