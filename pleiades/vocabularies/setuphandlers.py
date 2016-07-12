@@ -145,6 +145,15 @@ def installVocabularies(context):
              'same_as': None, 'hidden': False},
         ]
 
+    # prepopulate location_types vocab - if uninitialized
+    if not settings.location_types:
+        settings.location_types = [
+            {'id': u'associated_modern', 'title': u'associated modern'},
+            {'id': u'central_point', 'title': u'central point'},
+            {'id': u'legacy', 'title': u'legacy'},
+            {'id': u'representative', 'title': u'representative'},
+        ]
+
 
 def install_datagrid_field(context):
     qi = getToolByName(context, 'portal_quickinstaller')

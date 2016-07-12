@@ -104,6 +104,22 @@
     />
   </genericsetup:upgradeSteps>
 
+  <genericsetup:upgradeSteps
+      profile="pleiades.vocabularies:default"
+      source="0005"
+      destination="0006">
+    <genericsetup:upgradeDepends
+      title="Install location types registry vocabulary"
+      description=""
+      import_steps="plone.app.registry"
+    />
+    <genericsetup:upgradeDepends
+      title="Install location types vocabulary default data"
+      description=""
+      import_steps="pleiades.vocabularies-various"
+    />
+  </genericsetup:upgradeSteps>
+
   <utility
       provides="zope.schema.interfaces.IVocabularyFactory"
       component=".vocabularies.time_periods_vocabulary"
@@ -126,6 +142,12 @@
       provides="zope.schema.interfaces.IVocabularyFactory"
       component=".vocabularies.relationship_types_vocabulary"
       name="pleiades.vocabularies.relationship_types"
+      />
+
+  <utility
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      component=".vocabularies.location_types_vocabulary"
+      name="pleiades.vocabularies.location_types"
       />
 
 </configure>

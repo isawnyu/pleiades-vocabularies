@@ -14,8 +14,8 @@ class PleiadesSettingsEditForm(controlpanel.RegistryEditForm):
     def updateFields(self):
         super(PleiadesSettingsEditForm, self).updateFields()
         for field in (
-                'time_periods', 'place_types', 'arch_remains',
-                'relationship_types'):
+                'arch_remains', 'location_types', 'place_types',
+                'relationship_types', 'time_periods'):
             self.fields[field].widgetFactory = DataGridFieldFactory
             self.fields[field].allow_insert = True
 
