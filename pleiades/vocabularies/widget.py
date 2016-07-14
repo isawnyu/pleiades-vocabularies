@@ -1,28 +1,35 @@
 from AccessControl import ClassSecurityInfo
-
-from Products.Archetypes.Widget import TypesWidget
-
+from ExtensionClass import Base
+from Products.Archetypes.Widget import InAndOutWidget
+from Products.Archetypes.Widget import SelectionWidget
 from .vocabularies import get_vocabulary
 
 
-class TimePeriodSelectionWidget(TypesWidget):
-    _properties = TypesWidget._properties.copy()
-    _properties.update({
-        'format': "flex",  # possible values: flex, select, radio
-        'macro': "time_period_selection",
-        'blurrable': True,
-        })
+class FilteredWidgetMixin(Base):
 
     security = ClassSecurityInfo()
 
-    security.declarePublic('render_own_label')
-    def render_own_label(self):
-        return True
+    @security.public
+    def hidden_terms(self, field):
+        vocab_name = getattr(field, 'vocabulary_factory').split('.')[-1]
+        terms = []
+        for term in get_vocabulary(vocab_name):
+            if term['hidden']:
+                terms.append(term['id'])
+        return terms
 
-    security.declarePublic('show_term')
-    def show_term(self, item):
-        time_periods = get_vocabulary('time_periods')
-        for term in time_periods:
-            if term['id'] == item and not term['hidden']:
-                return True
-        return False
+
+class FilteredSelectionWidget(FilteredWidgetMixin, SelectionWidget):
+    """A selection widget that filters out hidden options unless selected"""
+    _properties = SelectionWidget._properties.copy()
+    _properties.update({
+        'macro': "filtered_selection",
+        })
+
+
+class FilteredInAndOutWidget(FilteredWidgetMixin, InAndOutWidget):
+    """A selection widget that filters out hidden options unless selected"""
+    _properties = InAndOutWidget._properties.copy()
+    _properties.update({
+        'macro': "filtered_inandout",
+        })
