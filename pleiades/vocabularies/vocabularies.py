@@ -37,6 +37,9 @@ place_types_vocabulary = registry_vocabulary(place_types)
 arch_remains = IPleiadesSettings['arch_remains']
 arch_remains_vocabulary = registry_vocabulary(arch_remains)
 
+location_types = IPleiadesSettings['location_types']
+location_types_vocabulary = registry_vocabulary(location_types)
+
 relationship_types = IPleiadesSettings['relationship_types']
 relationship_types_vocabulary = registry_vocabulary(relationship_types)
 
@@ -49,5 +52,7 @@ def get_vocabulary(name):
         return []
     if name == 'time_periods':
         return sorted(vocabulary, key=lambda k: k['lower_bound'])
+    elif name == 'place_types':
+        return sorted(vocabulary, key=lambda k: k['title'])
     else:
         return vocabulary

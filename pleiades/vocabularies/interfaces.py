@@ -54,6 +54,14 @@ class IPleiadesSettings(Interface):
         )
     )
 
+    location_types = schema.List(
+        title=u'Location Types',
+        value_type=DictRow(
+            title=u'Location Entry',
+            schema=IVocabTerm,
+        )
+    )
+
     relationship_types = schema.List(
         title=u'Relationship Types',
         value_type=DictRow(
