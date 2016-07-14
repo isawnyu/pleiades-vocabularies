@@ -39,7 +39,8 @@
                                     vlen python:len(vocab);
                                     selectionview context/@@at_selection_widget;
                                     selection python:selectionview.getSelected(vocab, value);
-                                    format python:widget.format">
+                                    format python:widget.format;
+                                    hidden_terms python:widget.hidden_terms(field)">
 
                 <span tal:condition="python:(vlen &lt; 4 and format == 'flex') or (format == 'radio')"
                       tal:attributes="id fieldName;">
@@ -64,7 +65,7 @@
 
                     <tal:radios repeat="item vocab">
 
-                        <tal:show condition="python:item in selection or widget.show_term(item)">
+                        <tal:show condition="python:item in selection or item not in hidden_terms">
                             <input class="noborder blurrable"
                                    type="radio"
                                    tal:attributes="name fieldName;
@@ -114,7 +115,7 @@
                             <option tal:attributes="value item;
                                                     selected python:item in selection and 'selected' or None"
                                     tal:content="python:vocab.getValue(item)"
-                                    tal:condition="python:item in selection or widget.show_term(item)"
+                                    tal:condition="python:item in selection or item not in hidden_terms"
                                     i18n:translate=""
                                     />
 
