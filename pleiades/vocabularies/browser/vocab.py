@@ -3,6 +3,7 @@ import json
 from zope.publisher.interfaces import IPublishTraverse
 from zope.interface import implementer
 
+from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from ZPublisher.BaseRequest import DefaultPublishTraverse
@@ -122,3 +123,22 @@ class PleiadesVocabularyPublishTraverse(DefaultPublishTraverse):
             return VocabView(self.context, request, name)
         return super(PleiadesVocabularyPublishTraverse, self).publishTraverse(
             request, name)
+
+
+class SearchUtilities(BrowserView):
+
+    def __init__(self, context, request):
+        super(SearchUtilities, self).__init__(context, request)
+        self.catalog = getToolByName(context, 'portal_catalog')
+
+    def get_place_type_data(self):
+        featureTypes = set(self.catalog.uniqueValuesFor('getFeatureType'))
+        places_in_use = sorted(featureTypes)
+        place_types = get_vocabulary('place_types')
+        data = []
+        for pl in places_in_use:
+            if pl != '':
+                entry = [{'title': x['title'], 'id':x['id']} \
+                    for x in place_types if x['id'] == pl]
+                data.append(entry[0])
+        return data
