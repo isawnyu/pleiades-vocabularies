@@ -135,10 +135,7 @@ class SearchUtilities(BrowserView):
         featureTypes = set(self.catalog.uniqueValuesFor('getFeatureType'))
         places_in_use = sorted(featureTypes)
         place_types = get_vocabulary('place_types')
-        data = []
-        for pl in places_in_use:
-            if pl != '':
-                entry = [{'title': x['title'], 'id':x['id']} \
-                    for x in place_types if x['id'] == pl]
-                data.append(entry[0])
+        places = {p['id']: p['title'] for p in place_types}
+        data = [{'id': p, 'title': places[p]} \
+            for p in places_in_use if p and p in places]
         return data
