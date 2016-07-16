@@ -138,4 +138,4 @@ class SearchUtilities(BrowserView):
         places = {p['id']: p['title'] for p in place_types}
         data = [{'id': p, 'title': places[p]} \
             for p in places_in_use if p and p in places]
-        return data
+        return sorted(data, key=lambda k: k['title'].lower())
