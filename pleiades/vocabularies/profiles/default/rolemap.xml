@@ -3,9 +3,13 @@
   <permissions>
     <permission name="Pleiades: Add Vocabulary" acquire="False">
       <role name="Manager"/>
+      <role name="Site Administrator"/>
     </permission>
-    <permission name="Pleiades: Add Vocabulary Term" acquire="False">
+    <permission name="Pleiades: Add Vocabulary Term" acquire="True">
       <role name="Manager"/>
+      <role name="Site Administrator"/>
+      <role name="Owner"/>
+      <role name="Contributor"/>
       <role name="Member"/>
     </permission>
   </permissions>

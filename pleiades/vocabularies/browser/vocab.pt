@@ -55,7 +55,7 @@
             (<span tal:replace="python:view.to_ad(term['lower_bound'])" /> -
              <span tal:replace="python:view.to_ad(term['upper_bound'])") />)</tal:b></a>
           <br />
-          <span tal:content="term/description"></span>
+          <span tal:content="term/description|string:"></span>
         </p>
       </div>
     </div>
