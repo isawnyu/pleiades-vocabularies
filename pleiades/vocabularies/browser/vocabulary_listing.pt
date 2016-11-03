@@ -151,7 +151,7 @@
                     <img tal:replace="structure item_icon/html_tag" />
                     <a href="relationship-types">Connection Types</a>
                 </span></dt>
-                <dd><span class="description"></span></dd>
+                <dd><span class="description">Categories of relationships between places.</span></dd>
 
                 </tal:registry-vocabs>
 
