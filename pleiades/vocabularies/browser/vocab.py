@@ -16,6 +16,7 @@ VOCAB_TITLES = {
     'time-periods': 'Time Periods',
     'place-types': 'Feature (or Place) Categories',
     'location-types': 'Location Categories',
+    'relationship-types': 'Connection Types',
 }
 
 
@@ -120,7 +121,7 @@ class VocabView(BrowserView):
 class PleiadesVocabularyPublishTraverse(DefaultPublishTraverse):
 
     def publishTraverse(self, request, name):
-        if name in ('time-periods', 'place-types', 'location-types'):
+        if name in VOCAB_TITLES.keys():
             return VocabView(self.context, request, name)
         return super(PleiadesVocabularyPublishTraverse, self).publishTraverse(
             request, name)

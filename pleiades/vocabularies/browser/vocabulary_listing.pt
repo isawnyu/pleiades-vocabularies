@@ -146,6 +146,13 @@
                     <a href="location-types">Location Categories</a>
                 </span></dt>
                 <dd><span class="description">Once we called these "types", but as they are not hierarchical and not exclusive we have changed them to "categories."</span></dd>
+
+                <dt><span class="summary">
+                    <img tal:replace="structure item_icon/html_tag" />
+                    <a href="relationship-types">Connection Types</a>
+                </span></dt>
+                <dd><span class="description"></span></dd>
+
                 </tal:registry-vocabs>
 
             </metal:block>
