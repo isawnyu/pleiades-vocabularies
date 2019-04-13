@@ -14,6 +14,7 @@ from Products.CMFCore.WorkflowCore import WorkflowException
 
 
 logger = logging.getLogger('pleiades.configuration.setuphandlers')
+WS_REGEXP = re.compile(r'\s*\n\s*', re.M)
 
 
 def importVarious(context):
@@ -30,16 +31,16 @@ def installVocabularies(context):
     wftool = getToolByName(site, 'portal_workflow')
     vocab_folder = site['vocabularies']
     atvm_vocabs = [
+        ]
+    registry_vocabs = [
+        'time-periods',
+        'place-types',
         'name-accuracy',
         'association-certainty',
         'attestation-confidence',
         'name-completeness',
         'ancient-name-languages',
         'name-types',
-        ]
-    registry_vocabs = [
-        'time-periods',
-        'place-types',
     ]
 
     registry = getUtility(IRegistry)
@@ -192,7 +193,9 @@ def migrate_vocabulary(context, atvm_name, registry_name):
         new_terms.append(dict(
             id=term.getId().decode('utf-8'),
             title=term.Title().decode('utf-8'),
-            description=term.Description().decode('utf-8'),
+            description=WS_REGEXP.sub(
+                u' ', term.Description().decode('utf-8')
+            ),
             same_as=None,
             hidden=hidden,
         ))
@@ -204,3 +207,30 @@ def migrate_vocabulary(context, atvm_name, registry_name):
 
 def migrate_place_types(context):
     migrate_vocabulary(context, 'place-types', 'place_types')
+
+
+def migrate_remaining(context):
+    for name in ('name-accuracy',
+                 'association-certainty',
+                 'attestation-confidence',
+                 'name-completeness',
+                 'ancient-name-languages',
+                 'name-types'):
+        new_name = name.replace('-', '_')
+        migrate_vocabulary(context, name, new_name)
+
+
+def remove_old_vocabs(context):
+    ut = getToolByName(context, 'portal_url')
+    site = ut.getPortalObject()
+    wftool = getToolByName(site, 'portal_workflow')
+    vocabs = site['vocabularies']
+    if vocabs.portal_type != 'Folder':
+        site.manage_delObjects(['vocabularies'])
+        # apply marker interface so that new views can only be used here
+        vid = site.invokeFactory('Folder', 'vocabularies')
+        vocabs = site[vid]
+        wftool.doActionFor(vocabs, action='publish')
+        alsoProvides(vocabs, IPleiadesVocabularyFolder)
+        # change default view to point to our custom folder listing
+        vocabs.setLayout('pleiades-vocabulary-listing')

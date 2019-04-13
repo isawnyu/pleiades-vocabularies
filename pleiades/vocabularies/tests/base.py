@@ -4,8 +4,6 @@ from Products.PloneTestCase import PloneTestCase as ptc
 from Products.PloneTestCase.layer import onsetup
 from Testing import ZopeTestCase as ztc
 
-ztc.installProduct('ATVocabularyManager')
-
 
 @onsetup
 def setup_pleiades_vocabularies():

@@ -2,9 +2,12 @@ from AccessControl import ClassSecurityInfo
 from pleiades.vocabularies.config import PROJECTNAME
 from pleiades.vocabularies.content.interfaces import IPleiadesVocabularyTerm
 from Products.Archetypes import atapi
-from Products.ATVocabularyManager import config as atvm_config
-from Products.ATVocabularyManager.types.simple.term import SimpleVocabularyTerm
 from zope.interface import implements
+
+try:
+    from Products.ATVocabularyManager.types.simple.term import SimpleVocabularyTerm
+except ImportErrror:
+    SimpleVocabularyTerm = object
 
 
 class PleiadesVocabularyTerm(SimpleVocabularyTerm):
@@ -56,6 +59,8 @@ class PleiadesVocabularyTerm(SimpleVocabularyTerm):
     def getTermKey(self):
         """
         """
+        from Products.ATVocabularyManager import config as atvm_config
+
         if not atvm_config.HAS_LINGUA_PLONE or self.isCanonical():
             return self.getId()
         else:

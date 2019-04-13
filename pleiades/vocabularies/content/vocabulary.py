@@ -12,12 +12,15 @@ from Products.Archetypes import atapi
 from Products.Archetypes.interfaces import IVocabulary
 from Products.Archetypes.utils import DisplayList
 from Products.Archetypes.utils import OrderedDict
-from Products.ATVocabularyManager import config as atvm_config
-from Products.ATVocabularyManager.types.simple.vocabulary import SimpleVocabulary
 from Products.CMFCore.permissions import View
 from Products.CMFCore.utils import getToolByName
 from zope.interface import implements
 import re
+
+try:
+    from Products.ATVocabularyManager.types.simple.vocabulary import SimpleVocabulary
+except ImportError:
+    SimpleVocabulary = object
 
 SORT_METHOD_TEMPORAL = "Sort temporally (increasing date)"
 
@@ -77,7 +80,7 @@ class PleiadesVocabulary(SimpleVocabulary):
 
         atapi.StringField(
             "sortMethod",
-            default=atvm_config.SORT_METHOD_LEXICO_VALUES,
+            default=SORT_METHOD_TEMPORAL,
             required=0,  # smooth upgrades from 1.0.0-beta2
             searchable=0,
             widget=atapi.SelectionWidget(
@@ -87,7 +90,7 @@ class PleiadesVocabulary(SimpleVocabulary):
                 description_msgid="help_sort_method",
                 i18n_domain="atvocabularymanager",
             ),
-            vocabulary=atvm_config.VOCABULARY_SORT_ORDERS + [SORT_METHOD_TEMPORAL]
+            vocabulary=[SORT_METHOD_TEMPORAL]
         ),
     ))
 
@@ -165,6 +168,7 @@ class PleiadesVocabulary(SimpleVocabulary):
         """ returns a list of keys sorted accordingly to the
         selected sort method (may be unsorted if method = no sort)
         """
+        from Products.ATVocabularyManager import config as atvm_config
         sortMethod = self.getSortMethod()
         keys, values = zip(*self.getTermItems())
         keys = list(keys)

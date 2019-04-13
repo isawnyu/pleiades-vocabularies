@@ -43,6 +43,24 @@ location_types_vocabulary = registry_vocabulary(location_types)
 relationship_types = IPleiadesSettings['relationship_types']
 relationship_types_vocabulary = registry_vocabulary(relationship_types)
 
+association_certainty = IPleiadesSettings['association_certainty']
+association_certainty_vocabulary = registry_vocabulary(association_certainty)
+
+attestation_confidence = IPleiadesSettings['attestation_confidence']
+attestation_confidence_vocabulary = registry_vocabulary(attestation_confidence)
+
+ancient_name_languages = IPleiadesSettings['ancient_name_languages']
+ancient_name_languages_vocabulary = registry_vocabulary(ancient_name_languages)
+
+name_types = IPleiadesSettings['name_types']
+name_types_vocabulary = registry_vocabulary(name_types)
+
+name_accuracy = IPleiadesSettings['name_accuracy']
+name_accuracy_vocabulary = registry_vocabulary(name_accuracy)
+
+name_completeness = IPleiadesSettings['name_completeness']
+name_completeness_vocabulary = registry_vocabulary(name_completeness)
+
 
 def get_vocabulary(name):
     registry = getUtility(IRegistry)
@@ -52,7 +70,9 @@ def get_vocabulary(name):
         return []
     if name == 'time_periods':
         return sorted(vocabulary, key=lambda k: k['lower_bound'])
-    elif name == 'place_types':
+    elif name in ('place_types', 'ancient_name_languages',
+                  'attestation_confidence', 'name_types',
+                  'name_accuracy', 'name_completeness'):
         return sorted(vocabulary, key=lambda k: k['title'])
     else:
         return vocabulary
