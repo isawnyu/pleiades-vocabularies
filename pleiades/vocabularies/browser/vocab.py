@@ -17,6 +17,12 @@ VOCAB_TITLES = {
     'place-types': 'Feature (or Place) Categories',
     'location-types': 'Location Categories',
     'relationship-types': 'Connection Types',
+    'association-certainty': 'Association Certainty',
+    'attestation-confidence': 'Attestation Confidence',
+    'ancient-name-languages': 'Language and Script',
+    'name-types': 'Name Types',
+    'name-accuracy': 'Name Accuracy',
+    'name-completeness': 'Name Completeness',
 }
 
 

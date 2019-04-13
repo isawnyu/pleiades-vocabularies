@@ -69,3 +69,51 @@ class IPleiadesSettings(Interface):
             schema=IVocabTermExtended,
         )
     )
+
+    association_certainty = schema.List(
+        title=u'Association Certainty',
+        value_type=DictRow(
+            title=u'Association Certainty',
+            schema=IVocabTermExtended,
+        )
+    )
+
+    attestation_confidence = schema.List(
+        title=u'Attestation Confidence',
+        value_type=DictRow(
+            title=u'Attestation Confidence',
+            schema=IVocabTermExtended,
+        )
+    )
+
+    ancient_name_languages = schema.List(
+        title=u'Language and Script',
+        value_type=DictRow(
+            title=u'Language and Script',
+            schema=IVocabTermExtended,
+        )
+    )
+
+    name_types = schema.List(
+        title=u'Name Types',
+        value_type=DictRow(
+            title=u'Name Types',
+            schema=IVocabTermExtended,
+        )
+    )
+
+    name_accuracy = schema.List(
+        title=u'Name Accuracy',
+        value_type=DictRow(
+            title=u'Name Accuracy',
+            schema=IVocabTermExtended,
+        )
+    )
+
+    name_completeness = schema.List(
+        title=u'Name Completeness',
+        value_type=DictRow(
+            title=u'Name Completeness',
+            schema=IVocabTermExtended,
+        )
+    )
