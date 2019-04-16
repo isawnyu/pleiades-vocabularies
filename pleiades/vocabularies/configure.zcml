@@ -173,37 +173,37 @@
 
   <utility
       provides="zope.schema.interfaces.IVocabularyFactory"
-      component=".vocabularies.location_types_vocabulary"
+      component=".vocabularies.association_certainty_vocabulary"
       name="pleiades.vocabularies.association_certainty"
       />
 
   <utility
       provides="zope.schema.interfaces.IVocabularyFactory"
-      component=".vocabularies.location_types_vocabulary"
+      component=".vocabularies.attestation_confidence_vocabulary"
       name="pleiades.vocabularies.attestation_confidence"
       />
 
   <utility
       provides="zope.schema.interfaces.IVocabularyFactory"
-      component=".vocabularies.location_types_vocabulary"
+      component=".vocabularies.ancient_name_languages_vocabulary"
       name="pleiades.vocabularies.ancient_name_languages"
       />
 
   <utility
       provides="zope.schema.interfaces.IVocabularyFactory"
-      component=".vocabularies.location_types_vocabulary"
+      component=".vocabularies.name_types_vocabulary"
       name="pleiades.vocabularies.name_types"
       />
 
   <utility
       provides="zope.schema.interfaces.IVocabularyFactory"
-      component=".vocabularies.location_types_vocabulary"
+      component=".vocabularies.name_accuracy_vocabulary"
       name="pleiades.vocabularies.name_accuracy"
       />
 
   <utility
       provides="zope.schema.interfaces.IVocabularyFactory"
-      component=".vocabularies.location_types_vocabulary"
+      component=".vocabularies.name_completeness_vocabulary"
       name="pleiades.vocabularies.name_completeness"
       />
 
