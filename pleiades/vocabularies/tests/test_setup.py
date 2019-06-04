@@ -16,9 +16,10 @@ class TestSetup(PleiadesVocabularyFunctionalTestCase):
         self.settings = registry.forInterface(IPleiadesSettings)
 
     def test_vocabs(self):
-        self.failIf(getattr(self.settings, 'name-accuracy', None) is None)
-        self.failIf(getattr(self.settings, 'association-certainty', None) is None)
-        self.failIf(getattr(self.settings, 'attestation-confidence', None) is None)
-        self.failIf(getattr(self.settings, 'name-completeness', None) is None)
-        self.failIf(getattr(self.settings, 'ancient-name-languages', None) is None)
-        self.failIf(getattr(self.settings, 'name-types', None) is None)
+        self.failIf(getattr(self.settings, 'name_accuracy', None) is None)
+        self.failIf(getattr(self.settings, 'association_certainty', None) is None)
+        self.failIf(getattr(self.settings, 'attestation_confidence', None) is None)
+        self.failIf(getattr(self.settings, 'name_completeness', None) is None)
+        self.failIf(getattr(self.settings, 'ancient_name_languages', None) is None)
+        self.failIf(getattr(self.settings, 'name_types', None) is None)
+        self.failIf(getattr(self.settings, 'arch_remains', None) is None)

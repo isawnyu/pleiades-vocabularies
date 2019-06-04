@@ -3,22 +3,10 @@ Testing user terms
 
 Check initial, published terms
 
+  >>> from pleiades.vocabularies.browser.vocab import PleiadesVocabularyPublishTraverse
   >>> portal = self.portal
-  >>> vocab = portal['vocabularies']['name-accuracy']
-  >>> self.logout()
-  >>> vocab.getTermItems()
-  [('accurate', 'accurate'), ('false', 'false'), ('inaccurate', 'inaccurate')]
-  
-Add a new term
-
-  >>> self.login()
-  >>> self.setRoles(['Member'])
-  >>> _ = vocab.invokeFactory('PleiadesVocabularyTerm', id='bogus', title='Bogus', description='Completely Bogus')
-  >>> vocab.getTermItems()
-  [('accurate', 'accurate'), ('false', 'false'), ('inaccurate', 'inaccurate'), ('bogus', 'Bogus')]
-  
-Now check that the new term isn't visible to unauthenticated
-
-  >>> self.logout()
-  >>> vocab.getTermItems()
-  [('accurate', 'accurate'), ('false', 'false'), ('inaccurate', 'inaccurate')]
+  >>> request = self.portal.REQUEST
+  >>> vocab_traverser = PleiadesVocabularyPublishTraverse(portal['vocabularies'], request)
+  >>> vocab = vocab_traverser.publishTraverse(request, 'name-accuracy')
+  >>> [(v[u'title'], v[u'id']) for v in vocab.terms]
+  [(u'accurate', u'accurate'), (u'false', u'false'), (u'inaccurate', u'inaccurate')]

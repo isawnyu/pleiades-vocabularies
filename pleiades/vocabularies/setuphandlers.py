@@ -27,7 +27,7 @@ def importVarious(context):
 def installVocabularies(context):
     """creates/imports the atvm vocabs."""
     site = context.getSite()
-    atvm = getToolByName(site, 'portal_vocabularies')
+    atvm = getToolByName(site, 'portal_vocabularies', None)
     wftool = getToolByName(site, 'portal_workflow')
     vocab_folder = site['vocabularies']
     atvm_vocabs = [
@@ -41,6 +41,7 @@ def installVocabularies(context):
         'name-completeness',
         'ancient-name-languages',
         'name-types',
+        'arch_remains',
     ]
 
     registry = getUtility(IRegistry)
@@ -98,7 +99,8 @@ def installVocabularies(context):
                 term = dict(
                     id=key.decode('utf8'),
                     title=title.decode('utf8'),
-                    description=descr.decode('utf8'),
+                    description=WS_REGEXP.sub(u' ',
+                                              descr.decode('utf8')),
                     hidden=False,
                     same_as=None,
                 )
