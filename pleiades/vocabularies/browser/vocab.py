@@ -23,7 +23,7 @@ VOCAB_TITLES = {
     'name-types': 'Name Types',
     'name-accuracy': 'Name Accuracy',
     'name-completeness': 'Name Completeness',
-    'arch_remains': 'Archeological Remains',
+    'arch-remains': 'Archeological Remains',
 }
 
 

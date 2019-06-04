@@ -41,7 +41,7 @@ def installVocabularies(context):
         'name-completeness',
         'ancient-name-languages',
         'name-types',
-        'arch_remains',
+        'arch-remains',
     ]
 
     registry = getUtility(IRegistry)
