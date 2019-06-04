@@ -153,6 +153,12 @@
                 </span></dt>
                 <dd><span class="description">Categories of relationships between places.</span></dd>
 
+                <dt><span class="summary">
+                    <img tal:replace="structure item_icon/html_tag" />
+                    <a href="arch-remains">Archaeological Remains</a>
+                </span></dt>
+                <dd><span class="description">Categories of archeological remains.</span></dd>
+
                 </tal:registry-vocabs>
 
             </metal:block>
