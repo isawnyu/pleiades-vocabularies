@@ -72,7 +72,8 @@ def get_vocabulary(name):
         return sorted(vocabulary, key=lambda k: k['lower_bound'])
     elif name in ('place_types', 'ancient_name_languages',
                   'attestation_confidence', 'name_types',
-                  'name_accuracy', 'name_completeness'):
+                  'name_accuracy', 'name_completeness',
+                  'relationship_types'):
         return sorted(vocabulary, key=lambda k: k['title'])
     else:
         return vocabulary
