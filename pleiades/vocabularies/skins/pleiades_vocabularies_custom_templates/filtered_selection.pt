@@ -74,7 +74,7 @@
                                                    value item;"
                                    />
 
-                            <label tal:content="python:vocab.getValue(item)"
+                            <label tal:content="python:vocab.getValue(item, default=item)"
                                    i18n:translate=""
                                    tal:attributes="for string:${fieldName}_${repeat/item/number}" />
 
@@ -114,7 +114,7 @@
 
                             <option tal:attributes="value item;
                                                     selected python:item in selection and 'selected' or None"
-                                    tal:content="python:vocab.getValue(item)"
+                                    tal:content="python:vocab.getValue(item, default=item)"
                                     tal:condition="python:item in selection or item not in hidden_terms"
                                     i18n:translate=""
                                     />
