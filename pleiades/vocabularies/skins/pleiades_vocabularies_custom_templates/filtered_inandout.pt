@@ -71,7 +71,7 @@
 
                         <tal:block tal:repeat="vocab_item vocab">
                           <option
-                            tal:define="label python:vocab.getValue(vocab_item)"
+                            tal:define="label python:vocab.getValue(vocab_item, default=vocab_item)"
                             tal:condition="python:vocab_item not in selection and vocab_item not in hidden_terms"
                             tal:attributes="value vocab_item;"
                             tal:content="label"
@@ -103,7 +103,7 @@
                           <tal:block tal:repeat="single_value selection">
                             <option
                               tal:attributes="value single_value;"
-                              tal:content="python:vocab.getValue(single_value)"
+                              tal:content="python:vocab.getValue(single_value, default=single_value)"
                               selected="selected"
                               i18n:translate="">
                                option
