@@ -40,12 +40,13 @@
                                     selectionview context/@@at_selection_widget;
                                     selection python:selectionview.getSelected(vocab, value);
                                     format python:widget.format;
-                                    hidden_terms python:widget.hidden_terms(field)">
+                                    hidden_terms python:widget.hidden_terms(field);
+                                    vlen python:vlen - len(hidden_terms)">
 
-                <span tal:condition="python:(vlen &lt; 4 and format == 'flex') or (format == 'radio')"
+                <span tal:condition="python:(vlen &lt; 7 and format == 'flex') or (format == 'radio')"
                       tal:attributes="id fieldName;">
 
-                    <!-- Radio when the vocab is short < 4 -->
+                    <!-- Radio when the vocab is short < 7 -->
 
                     <div class="formQuestion label">
                         <span tal:replace="python:widget.Label(here)" 
@@ -86,7 +87,7 @@
 
                 </span>
 
-                <tal:longVocab condition="python:(vlen >= 4 and format == 'flex') or (format in ('select', 'pulldown'))">
+                <tal:longVocab condition="python:(vlen >= 7 and format == 'flex') or (format in ('select', 'pulldown'))">
 
                     <!-- Pulldown when longer -->
 
