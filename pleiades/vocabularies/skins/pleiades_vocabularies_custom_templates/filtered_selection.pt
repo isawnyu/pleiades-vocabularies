@@ -48,7 +48,7 @@
 
                     <!-- Radio when the vocab is short < 7 -->
 
-                    <div class="formQuestion label">
+                    <div class="formQuestion label" style="display: block;">
                         <span tal:replace="python:widget.Label(here)" 
                               i18n:translate="" />
                         <span class="required"
