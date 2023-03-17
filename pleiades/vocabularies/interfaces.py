@@ -27,6 +27,11 @@ class IVocabTermExtended(Interface):
     hidden = schema.Bool(title=u'Hidden', default=False)
 
 
+class IZoteroWork(Interface):
+    short_title = schema.TextLine(title=u'Short title')
+    zotero_uri = schema.URI(title=u'Zotero URI')
+
+
 class IPleiadesSettings(Interface):
     """Global Pleiades site specific settings"""
 
@@ -115,5 +120,13 @@ class IPleiadesSettings(Interface):
         value_type=DictRow(
             title=u'Name Completeness',
             schema=IVocabTermExtended,
+        )
+    )
+
+    default_works = schema.List(
+        title=u"Default works",
+        value_type=DictRow(
+            title=u'Default work',
+            schema=IZoteroWork,
         )
     )

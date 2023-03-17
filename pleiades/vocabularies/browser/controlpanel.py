@@ -17,7 +17,8 @@ class PleiadesSettingsEditForm(controlpanel.RegistryEditForm):
                 'arch_remains', 'location_types', 'place_types',
                 'relationship_types', 'time_periods', 'association_certainty',
                 'ancient_name_languages', 'attestation_confidence',
-                'name_types', 'name_accuracy', 'name_completeness'
+                'name_types', 'name_accuracy', 'name_completeness',
+                'default_works'
                 ):
             self.fields[field].widgetFactory = DataGridFieldFactory
             self.fields[field].allow_insert = True
