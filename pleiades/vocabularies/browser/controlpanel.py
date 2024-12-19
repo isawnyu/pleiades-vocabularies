@@ -14,12 +14,20 @@ class PleiadesSettingsEditForm(controlpanel.RegistryEditForm):
     def updateFields(self):
         super(PleiadesSettingsEditForm, self).updateFields()
         for field in (
-                'arch_remains', 'location_types', 'place_types',
-                'relationship_types', 'time_periods', 'association_certainty',
-                'ancient_name_languages', 'attestation_confidence',
-                'name_types', 'name_accuracy', 'name_completeness',
-                'default_works'
-                ):
+            'ancient_name_languages',
+            'arch_remains',
+            'association_certainty',
+            'attestation_confidence',
+            'default_works',
+            'link_source_titles_for_urls',
+            'location_types',
+            'name_accuracy',
+            'name_completeness',
+            'name_types',
+            'place_types',
+            'relationship_types',
+            'time_periods',
+        ):
             self.fields[field].widgetFactory = DataGridFieldFactory
             self.fields[field].allow_insert = True
 

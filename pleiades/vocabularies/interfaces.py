@@ -32,6 +32,11 @@ class IZoteroWork(Interface):
     zotero_uri = schema.URI(title=u'Zotero URI')
 
 
+class ILinkedDataSource(Interface):
+    source_domain = schema.TextLine(title=u'Source domain')
+    friendly_label = schema.TextLine(title=u'Friendly label')
+
+
 class IPleiadesSettings(Interface):
     """Global Pleiades site specific settings"""
 
@@ -128,5 +133,13 @@ class IPleiadesSettings(Interface):
         value_type=DictRow(
             title=u'Default work',
             schema=IZoteroWork,
+        )
+    )
+
+    link_source_titles_for_urls = schema.List(
+        title=u'Mapping of source URLs to portlet headings',
+        value_type=DictRow(
+            title=u'Link source title',
+            schema=ILinkedDataSource,
         )
     )
