@@ -1,12 +1,8 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
-  xmlns:five="http://namespaces.zope.org/five"
   xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
   i18n_domain="pleiades.vocabularies"
   >
-
-  <five:registerPackage package="." initialize=".initialize" />
-  <includeDependencies package="." />
 
   <genericsetup:registerProfile
     name="default"
@@ -15,21 +11,6 @@
     description="Pleiades vocabulary features"
     provides="Products.GenericSetup.interfaces.EXTENSION"
     />
-
-  <permission
-    id="pleiades.vocabularies.AddVocabulary"
-    title="Pleiades: Add Vocabulary"
-    />
-
-  <permission
-    id="pleiades.vocabularies.AddVocabularyTerm"
-    title="Pleiades: Add Vocabulary Term"
-    />
-
-  <include package=".browser"/>
-  <include package=".content"/>
-  <include file="skins.zcml"/>
-  <include file="profiles.zcml" />
 
   <genericsetup:upgradeDepends
       source="*"
@@ -142,70 +123,12 @@
       />
   </genericsetup:upgradeSteps>
 
-  <utility
-      provides="zope.schema.interfaces.IVocabularyFactory"
-      component=".vocabularies.time_periods_vocabulary"
-      name="pleiades.vocabularies.time_periods"
+  <genericsetup:upgradeDepends
+      profile="pleiades.vocabularies:default"
+      title="Add field to IPleiadesSettings schema "
+      description=""
+      source="0007"
+      destination="0008"
+      import_steps="plone.app.registry"
       />
-
-  <utility
-      provides="zope.schema.interfaces.IVocabularyFactory"
-      component=".vocabularies.place_types_vocabulary"
-      name="pleiades.vocabularies.place_types"
-      />
-
-  <utility
-      provides="zope.schema.interfaces.IVocabularyFactory"
-      component=".vocabularies.arch_remains_vocabulary"
-      name="pleiades.vocabularies.arch_remains"
-      />
-
-  <utility
-      provides="zope.schema.interfaces.IVocabularyFactory"
-      component=".vocabularies.relationship_types_vocabulary"
-      name="pleiades.vocabularies.relationship_types"
-      />
-
-  <utility
-      provides="zope.schema.interfaces.IVocabularyFactory"
-      component=".vocabularies.location_types_vocabulary"
-      name="pleiades.vocabularies.location_types"
-      />
-
-  <utility
-      provides="zope.schema.interfaces.IVocabularyFactory"
-      component=".vocabularies.association_certainty_vocabulary"
-      name="pleiades.vocabularies.association_certainty"
-      />
-
-  <utility
-      provides="zope.schema.interfaces.IVocabularyFactory"
-      component=".vocabularies.attestation_confidence_vocabulary"
-      name="pleiades.vocabularies.attestation_confidence"
-      />
-
-  <utility
-      provides="zope.schema.interfaces.IVocabularyFactory"
-      component=".vocabularies.ancient_name_languages_vocabulary"
-      name="pleiades.vocabularies.ancient_name_languages"
-      />
-
-  <utility
-      provides="zope.schema.interfaces.IVocabularyFactory"
-      component=".vocabularies.name_types_vocabulary"
-      name="pleiades.vocabularies.name_types"
-      />
-
-  <utility
-      provides="zope.schema.interfaces.IVocabularyFactory"
-      component=".vocabularies.name_accuracy_vocabulary"
-      name="pleiades.vocabularies.name_accuracy"
-      />
-
-  <utility
-      provides="zope.schema.interfaces.IVocabularyFactory"
-      component=".vocabularies.name_completeness_vocabulary"
-      name="pleiades.vocabularies.name_completeness"
-      />
-
 </configure>
