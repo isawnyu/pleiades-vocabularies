@@ -7,20 +7,12 @@
 
   <five:registerPackage package="." initialize=".initialize" />
   <includeDependencies package="." />
-    
-  <genericsetup:registerProfile
-    name="default"
-    title="Pleiades Vocabularies"
-    directory="profiles/default"
-    description="Pleiades vocabulary features"
-    provides="Products.GenericSetup.interfaces.EXTENSION"
-    />
 
   <permission
     id="pleiades.vocabularies.AddVocabulary"
     title="Pleiades: Add Vocabulary"
     />
-    
+
   <permission
     id="pleiades.vocabularies.AddVocabularyTerm"
     title="Pleiades: Add Vocabulary Term"
@@ -29,117 +21,8 @@
   <include package=".browser"/>
   <include package=".content"/>
   <include file="skins.zcml"/>
-  
-  <genericsetup:upgradeDepends
-      source="*"
-      destination="1"
-      profile="pleiades.vocabularies:default"
-      title="Install registry vocabulary"
-      import_steps="plone.app.registry controlpanel"
-      />
+  <include file="profiles.zcml" />
 
-  <genericsetup:upgradeDepends
-      source="*"
-      destination="2"
-      profile="pleiades.vocabularies:default"
-      title="Install archeological remains registry vocabulary"
-      import_steps="plone.app.registry controlpanel"
-      />
-
-  <genericsetup:upgradeDepends
-      source="*"
-      destination="3"
-      profile="pleiades.vocabularies:default"
-      title="Install archeological remains registry vocabulary default data"
-      import_steps="pleiades.vocabularies-various"
-      />
-
-  <genericsetup:upgradeStep
-    profile="pleiades.vocabularies:default"
-    source="0001"
-    destination="0002"
-    title="Install collective.z3cform.datagridfield"
-    description=""
-    handler=".setuphandlers.install_datagrid_field"
-    />
-
-  <genericsetup:upgradeStep
-    profile="pleiades.vocabularies:default"
-    source="0002"
-    destination="0003"
-    title="Replace old time periods with new registry vocabulary"
-    description=""
-    handler=".setuphandlers.remove_old_time_periods"
-    />
-
-  <genericsetup:upgradeSteps
-      profile="pleiades.vocabularies:default"
-      source="0003"
-      destination="0004">
-    <genericsetup:upgradeDepends
-      title="Install relationship types registry vocabulary"
-      description=""
-      import_steps="plone.app.registry"
-    />
-    <genericsetup:upgradeDepends
-      title="Install relationship types vocabulary default data"
-      description=""
-      import_steps="pleiades.vocabularies-various"
-    />
-  </genericsetup:upgradeSteps>
-
-  <genericsetup:upgradeSteps
-      profile="pleiades.vocabularies:default"
-      source="0004"
-      destination="0005">
-    <genericsetup:upgradeDepends
-      title="Install place types registry vocabulary"
-      description=""
-      import_steps="plone.app.registry"
-    />
-    <genericsetup:upgradeStep
-      title="Migrate place types vocabulary terms"
-      description=""
-      handler=".setuphandlers.migrate_place_types"
-    />
-  </genericsetup:upgradeSteps>
-
-  <genericsetup:upgradeSteps
-      profile="pleiades.vocabularies:default"
-      source="0005"
-      destination="0006">
-    <genericsetup:upgradeDepends
-      title="Install location types registry vocabulary"
-      description=""
-      import_steps="plone.app.registry"
-    />
-    <genericsetup:upgradeDepends
-      title="Install location types vocabulary default data"
-      description=""
-      import_steps="pleiades.vocabularies-various"
-    />
-  </genericsetup:upgradeSteps>
-
-  <genericsetup:upgradeSteps
-      profile="pleiades.vocabularies:default"
-      source="0006"
-      destination="0007">
-    <genericsetup:upgradeDepends
-      title="Update location types registry vocabulary"
-      description=""
-      import_steps="plone.app.registry"
-    />
-    <genericsetup:upgradeStep
-      title="Replace old vocabs with new registry vocabs"
-      description=""
-      handler=".setuphandlers.migrate_remaining"
-      />
-    <genericsetup:upgradeStep
-      title="Remove old vocabulary folder"
-      description=""
-      handler=".setuphandlers.remove_old_vocabs"
-      />
-  </genericsetup:upgradeSteps>
 
   <utility
       provides="zope.schema.interfaces.IVocabularyFactory"
