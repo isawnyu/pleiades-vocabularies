@@ -143,3 +143,9 @@ class IPleiadesSettings(Interface):
             schema=ILinkedDataSource,
         )
     )
+
+    mapbox_access_token = schema.Text(
+        title=u'Mapbox access token',
+        description=u'Access token for Mapbox tiles and Mapbox GL maps.',
+        required=False,
+    )
