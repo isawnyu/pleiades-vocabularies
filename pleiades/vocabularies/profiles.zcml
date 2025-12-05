@@ -131,4 +131,14 @@
       destination="0008"
       import_steps="plone.app.registry"
       />
+
+  <genericsetup:upgradeDepends
+      profile="pleiades.vocabularies:default"
+      title="Add field to IPleiadesSettings schema"
+      description=""
+      source="0008"
+      destination="0009"
+      import_steps="plone.app.registry"
+      />
+
 </configure>
